@@ -1,7 +1,7 @@
 
-const plmUrl = "http://localhost";
-//const drawUrl = "http://localhost:8080";
-const drawUrl = "http://localhost:8080";
+const plmUrl = window.location.protocol+'//'+window.location.hostname;
+const drawUrl = window.location.protocol+'//'+window.location.host+'/'
+    + (window.location.pathname.split('/').length>2?window.location.pathname.split('/')[1]:'');
 let gXml = "";
 let iframe;
 
@@ -16,7 +16,7 @@ window.onload = function () {
     iframe.setAttribute(
         "src",
         drawUrl +
-        "/?splash=0&clibs=Uhttp%3A%2F%2Flocalhost%3A8080%2Fstencils%2Fbpfc%2FBPFC&embed=1&ui=sketch&spin=1&proto=json&configure=1&ruler=1&zoom=4&viewbox=" +
+        "/?splash=0&clibs=U"+encodeURIComponent(drawUrl+'/stencils/bpfc/BPFC')+"&embed=1&ui=sketch&spin=1&proto=json&configure=1&ruler=1&zoom=4&viewbox=" +
         encodeURIComponent('{"x":3,"y":100,"width":1000,"height":1000}')
     );
 
