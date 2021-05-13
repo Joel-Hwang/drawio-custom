@@ -144,12 +144,20 @@
     <url-pattern>/service/*</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>Assembly</servlet-name>
+    <servlet-name>BPFC</servlet-name>
     <jsp-file>/view/bpfc.html</jsp-file>
   </servlet>
   <servlet-mapping>
-    <servlet-name>Assembly</servlet-name>
+    <servlet-name>BPFC</servlet-name>
     <url-pattern>/bpfc</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>PFC</servlet-name>
+    <jsp-file>/view/pfc.html</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PFC</servlet-name>
+    <url-pattern>/pfc</url-pattern>
   </servlet-mapping>
   <mime-mapping>
     <extension>css</extension>
