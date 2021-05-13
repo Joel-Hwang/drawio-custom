@@ -24,7 +24,6 @@ window.onload = function () {
 };
 
 function postMessageBpfc(evt) {
-    debugger;
     if (evt.data.length < 1) return;
     var msg = JSON.parse(evt.data);
     switch (msg.event) {
