@@ -5,6 +5,8 @@ const drawUrl = window.location.protocol+'//'+window.location.host+'/'
 let gXml = "";
 let iframe;
 
+const defaultXml = '<mxGraphModel dx="1285" dy="914" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="826" pageHeight="1169" background="#ffffff" math="0" shadow="0"><root><mxCell id="0"/><mxCell id="1" parent="0"/><mxCell id="4" value="&lt;b&gt;LU MAT. INFORMATION&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFCC;" parent="1" vertex="1"><mxGeometry x="20" y="120" width="138" height="16" as="geometry"/></mxCell><mxCell id="5" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#ffffff;" parent="1" vertex="1"><mxGeometry x="20" y="136" width="138" height="284" as="geometry"/></mxCell><mxCell id="6" value="&lt;b&gt;BRUSH TYPE&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFCC;" parent="1" vertex="1"><mxGeometry x="20" y="420" width="138" height="15" as="geometry"/></mxCell><mxCell id="7" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#ffffff;" parent="1" vertex="1"><mxGeometry x="20" y="435" width="138" height="72" as="geometry"/></mxCell><mxCell id="8" value="TEMP. CHECKING SPOTS" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1"><mxGeometry x="821" y="120" width="197" height="30" as="geometry"/></mxCell><mxCell id="9" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#e51400;fontColor=#ffffff;strokeColor=none;" parent="1" vertex="1"><mxGeometry x="827" y="127" width="16" height="16" as="geometry"/></mxCell><mxCell id="10" value="Mark &quot;M&quot; ON AUTO PROCESS" style="rounded=0;whiteSpace=wrap;html=1;align=right;" parent="1" vertex="1"><mxGeometry x="821" y="150" width="197" height="30" as="geometry"/></mxCell><mxCell id="11" value="&lt;b&gt;&lt;font color=&quot;#ffffff&quot;&gt;M&lt;/font&gt;&lt;/b&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;strokeColor=#FFFFFF;fillColor=#92D050;" parent="1" vertex="1"><mxGeometry x="824" y="153.75" width="22.5" height="22.5" as="geometry"/></mxCell><mxCell id="12" value="&lt;p style=&quot;margin-top: 0pt ; margin-bottom: 0pt ; margin-left: 0in ; text-indent: 0in&quot;&gt;&lt;br&gt;&lt;/p&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fillColor=#ffffff;strokeColor=#000000;" parent="1" vertex="1"><mxGeometry x="821" y="180" width="197" height="160" as="geometry"/></mxCell><mxCell id="13" value="&lt;b&gt;ATTACHING SEQUENCE&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFCC;" parent="1" vertex="1"><mxGeometry x="821" y="340" width="197" height="15" as="geometry"/></mxCell><mxCell id="14" value="&lt;p style=&quot;margin-top: 0pt ; margin-bottom: 0pt ; margin-left: 0in ; text-indent: 0in ; direction: ltr ; unicode-bidi: embed&quot;&gt;&lt;br&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;connectable=1;" parent="1" vertex="1"><mxGeometry x="821" y="355" width="197" height="152" as="geometry"/></mxCell><mxCell id="15" value="" style="endArrow=none;html=1;exitX=0;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0;entryDx=0;entryDy=0;rounded=0;" parent="1" edge="1"><mxGeometry width="50" height="50" relative="1" as="geometry"><mxPoint x="20" y="120" as="sourcePoint"/><mxPoint x="1018" y="120" as="targetPoint"/></mxGeometry></mxCell><mxCell id="16" value="" style="endArrow=none;html=1;" parent="1" edge="1"><mxGeometry width="50" height="50" relative="1" as="geometry"><mxPoint x="158" y="507" as="sourcePoint"/><mxPoint x="821" y="507" as="targetPoint"/></mxGeometry></mxCell><mxCell id="17" value="" style="endArrow=none;html=1;entryX=1;entryY=0;entryDx=0;entryDy=0;rounded=0;" parent="1" edge="1"><mxGeometry width="50" height="50" relative="1" as="geometry"><mxPoint x="1018" y="507" as="sourcePoint"/><mxPoint x="1018" y="120" as="targetPoint"/></mxGeometry></mxCell><mxCell id="18" value="" style="endArrow=none;html=1;entryX=1;entryY=0;entryDx=0;entryDy=0;rounded=0;" parent="1" edge="1"><mxGeometry width="50" height="50" relative="1" as="geometry"><mxPoint x="20" y="507" as="sourcePoint"/><mxPoint x="20" y="120" as="targetPoint"/></mxGeometry></mxCell></root></mxGraphModel>';
+
 window.onload = function () {
     window.resizeTo(1620, 1000);
 
@@ -25,10 +27,14 @@ window.onload = function () {
 
 function postMessageBpfc(evt) {
     if (evt.data.length < 1) return;
-    var msg = JSON.parse(evt.data);
+    let msg = JSON.parse(evt.data);
     switch (msg.event) {
         case "getXml":
             gXml = msg.mxgraph;
+            popMat.data = msg.bomData;
+            popPrc.data = msg.procData;
+
+            if(!gXml) gXml = defaultXml;
             break;
         case "configure":
             editor.configure();
