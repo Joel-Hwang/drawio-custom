@@ -31,8 +31,13 @@ function postMessageBpfc(evt) {
     switch (msg.event) {
         case "getXml":
             gXml = msg.mxgraph;
-            popMat.data = msg.bomData;
-            popPrc.data = msg.procData;
+            try{
+                popMat.data = JSON.parse(msg.bomData);
+            }catch{alert("Invalid format(bomData)");}
+
+            try{
+                popPrc.data = JSON.parse(msg.procData);
+            }catch{alert("Invalid format(procData)");}
 
             if(!gXml) gXml = defaultXml;
             break;
