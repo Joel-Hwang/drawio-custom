@@ -153,43 +153,10 @@ let custom = {
 };
 
 let popMat = {
-    data: [
-        {
-            _part_type: "MIDSOLE",
-            _mat_name: "CMP-SKIN ON (MWCMP001)",
-            _mat_cd: "244309",
-        },
-        {
-            _part_type: "MIDSOLE",
-            _mat_name: "CMP-SKIN OFF (MWCMP001)",
-            _mat_cd: "245309",
-        },
-        {
-            _part_type: "MIDSOLE",
-            _mat_name: "CMP-SKIN IN (MWCMP001)",
-            _mat_cd: "246309",
-        },
-        {
-            _part_type: "MIDSOLE",
-            _mat_name: "CMP-SKIN OUT (MWCMP001)",
-            _mat_cd: "247309",
-        },
-        {
-            _part_type: "MIDSOLE",
-            _mat_name: "CMP-SKIN AT (MWCMP001)",
-            _mat_cd: "248309",
-        },
-        {
-            _part_type: "MIDSOLE",
-            _mat_name: "CMP-SKIN AT (MWCMP001)",
-            _mat_cd: "248309",
-        },
-        {
-            _part_type: "MIDSOLE",
-            _mat_name: "CMP-SKIN AT (MWCMP001)",
-            _mat_cd: "248309",
-        },
-    ],
+    data: [ {id: "D20C8B8FBBA246D19499B2170A930AF7", _mat_cd: "11121", _mat_name: "FIRM PU BACKING FOAM ( 2 MM )", _mcs_number: "BF/PU 003", _part_name: "COLLAR LINING 1"}
+    ,{id: "28DE192F781A4AB38F322E75C6E9C397", _mat_cd: "2136", _mat_name: "GENERIC Outer CARTON", _mcs_number: "BX/ 002", _part_name: "OUTER CARTON"}
+    ,{id: "77574CA68734418EA3E9B2A492B58BA9", _mat_cd: "246467", _mat_name: "MOSNET MESH, REC", _mcs_number: "LUS/PK 6033", _part_name: "TONGUE OLAY"}
+    ,{id: "46F193D6426946D7BA6BB76CCBF59984", _mat_cd: "246348", _mat_name: "BEETLE SPACER V3 REC(DRT-2782)", _mcs_number: "LU1C1P/PK 6072", _part_name: "VAMP"}],
     loc: {
         x: 40,
         y: 130,
@@ -198,12 +165,17 @@ let popMat = {
         let popMatContents = document.querySelector("#popMatContents");
         let tmp = document.querySelector("#matCard");
         for (let mat of popMat.data) {
+            tmp.content.querySelector('div[name="_part_type"').id = mat.id;
             tmp.content.querySelector('div[name="_part_type"').textContent =
                 mat._part_type;
             tmp.content.querySelector('div[name="_mat_name"').textContent =
                 mat._mat_name;
             tmp.content.querySelector('div[name="_mat_cd"').textContent =
                 mat._mat_cd;
+            tmp.content.querySelector('div[name="_part_name"').textContent =
+                mat._part_name;
+            tmp.content.querySelector('div[name="_mcs_number"').textContent =
+                mat._mcs_number;
             let clone = tmp.content.cloneNode(true);
             popMatContents.appendChild(clone);
         }
@@ -217,18 +189,22 @@ let popMat = {
             obj.dataset.select = true;
         }
     },
-    onClickOk: () => {
+    onClickOk: async () => {
         // iframe load action을 다시 날려야 함
         let xmlDoc = mxUtils.parseXml(gXml);
+        let luMatParam = [];
         for (let mat of document.querySelectorAll(
             "#popMatContents .card.select"
         )) {
             let _mat_cd = mat.querySelector('div[name="_mat_cd"]').textContent;
             let _mat_name = mat.querySelector('div[name="_mat_name"]')
                 .textContent;
-
+            let _mcs_number = mat.querySelector('div[name="_mcs_number"]')
+                .textContent;
+            luMatParam.push(_mcs_number);
             let mxCell = xmlDoc.createElement("mxCell");
             let mxCells = xmlDoc.querySelectorAll("mxCell");
+
             mxCell.id = Number(mxCells[mxCells.length - 1].id) + 1;
             mxCell.setAttribute("value", `<b>${_mat_name}(#${_mat_cd})</b>`);
             mxCell.setAttribute(
@@ -241,6 +217,17 @@ let popMat = {
             mxCell.innerHTML = `<mxGeometry x="${(popMat.loc.x += 150)}" y="${popMat.loc.y}" width="140" height="60" as="geometry"/>`;
             xmlDoc.querySelector("root").appendChild(mxCell);
         }
+        let luMat = await popMat.retrieveLuMat(luMatParam);
+        let mxCells = xmlDoc.querySelectorAll("mxCell");
+        let mxCellLuMat = xmlDoc.createElement("mxCell");
+        mxCellLuMat.id = Number(mxCells[mxCells.length - 1].id) + 1;
+        mxCellLuMat.setAttribute("value", luMat);
+        mxCellLuMat.setAttribute('style','text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;');
+        mxCellLuMat.setAttribute("vertex", "1");
+        mxCellLuMat.setAttribute("parent", "1");
+        mxCellLuMat.innerHTML = `<mxGeometry x="${popMat.loc.x}" y="${popMat.loc.y+50}" width="650" height="180"  as="geometry"/>`;
+        xmlDoc.querySelector("root").appendChild(mxCellLuMat);
+
         popMat.loc.x += 50;
         popMat.loc.y += 50;
         gXml = mxUtils.getXml(xmlDoc);
@@ -256,51 +243,31 @@ let popMat = {
         document.querySelector("#popMatContents").innerHTML = "";
         document.querySelector("#popMat").style.display = "none";
     },
+
+    retrieveLuMat: async (param) => {
+        let response = await fetch(drawUrl+'lumat',{
+            method:'POST',
+            headers: {
+                'Content-Type':'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(param)
+        });
+        if (response.ok) {
+            let res = '';
+            let json = await response.json();
+            for(let key of Object.keys(json)){
+                res = res + key + ' : ' + json[key]+'\n\n';
+            }
+            return res;
+        } else {
+            alert("HTTP-Error: " + response.status);
+            return null;
+        }
+    }
 };
 
 let popPrc = {
-    data: [
-        {
-            _proc_name: "Primer",
-            _chemical: "UE-312",
-        },
-        {
-            _proc_name: "Primer",
-            _chemical: "224-2L",
-        },
-        {
-            _proc_name: "Primer",
-            _chemical: "PR-505",
-        },
-        {
-            _proc_name: "Primer",
-            _chemical: "302-2",
-        },
-        {
-            _proc_name: "Primer",
-            _chemical: "UE-311",
-        },
-        {
-            _proc_name: "Cement",
-            _chemical: "SW-07",
-        },
-        {
-            _proc_name: "Cement",
-            _chemical: "6300U-2",
-        },
-        {
-            _proc_name: "Cement",
-            _chemical: "WA-1C",
-        },
-        {
-            _proc_name: "Cement",
-            _chemical: "6100U-2",
-        },
-        {
-            _proc_name: "Cement",
-            _chemical: "NP-57",
-        },
-    ],
+    data: [],
     loc: {
         x: 40,
         y: 210,
@@ -309,13 +276,14 @@ let popPrc = {
         let popContents = document.querySelector("#popPrcContents");
         popContents.innerHTML = "";
         let tmp = document.querySelector("#prcCard");
-        let tempAr = popPrc.data.filter(function(n){
+        let tempAr = popPrc.data.filter((n) => {
             if(!prc && !chem) return true;
             if(n._proc_name.toLowerCase().indexOf(prc.toLowerCase()) >=0
                 && n._chemical.toLowerCase().indexOf(chem.toLowerCase()) >=0 ) return true;
             else return false;
         });
         for (let data of tempAr) {
+            tmp.content.querySelector('div[name="_proc_name"').id = data.id;
             tmp.content.querySelector('div[name="_proc_name"').textContent =
                 data._proc_name;
             tmp.content.querySelector('div[name="_chemical"').textContent =
@@ -442,3 +410,5 @@ let popPrc = {
         popPrc.load(srchPrc,srchChem);
     }
 };
+
+

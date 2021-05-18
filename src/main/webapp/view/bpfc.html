@@ -267,17 +267,19 @@
 
 <template id="matCard">
   <div class="card" onclick="popMat.onClickItem(this)">
-    <div name="_mat_name" style="font-size: 11pt; margin-bottom: 10px; max-width: 250px">
+    <div name="_mat_name" style="font-size: 11pt; margin-bottom: 10px; max-width: 250px" id="">
       CMP-SKIN ON (MWCMP001)
     </div>
     <div name="_part_type">MIDSOLE</div>
     <div name="_mat_cd">244309</div>
+    <div name="_mcs_number" style="display: none"></div>
+    <div name="_part_name" style="display: none"></div>
   </div>
 </template>
 
 <template id="prcCard">
   <div class="card" onclick="popPrc.onClickItem(this)">
-    <div name="_proc_name" style="font-size: 11pt; margin-bottom: 10px">
+    <div id="" name="_proc_name" style="font-size: 11pt; margin-bottom: 10px">
       CMP-SKIN ON (MWCMP001)
     </div>
     <div name="_chemical">MIDSOLE</div>

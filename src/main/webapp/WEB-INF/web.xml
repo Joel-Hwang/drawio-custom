@@ -159,6 +159,14 @@
     <servlet-name>PFC</servlet-name>
     <url-pattern>/pfc</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>LUMat</servlet-name>
+    <servlet-class>com.bpfc.LUMatServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LUMat</servlet-name>
+    <url-pattern>/lumat</url-pattern>
+  </servlet-mapping>
   <mime-mapping>
     <extension>css</extension>
     <mime-type>text/css</mime-type>
