@@ -35,8 +35,8 @@ public class LUMatServlet extends HttpServlet
         BufferedReader bf = request.getReader();
 
         if(bf == null){
-            System.out.println("buffer = null");
-            bf= null;
+            PrintWriter writer = response.getWriter();
+            writer.print("{}");
         }
 
         JsonParser parser = new JsonParser();
@@ -45,9 +45,14 @@ public class LUMatServlet extends HttpServlet
         String[] keyword = {"","","",""};
         for(int i = 0; i<element.getAsJsonArray().size(); i++){
             String key = element.getAsJsonArray().get(i).getAsString();
-            if(key.isEmpty())
+            if(key.isEmpty() || "NULL".equals(key) || "N/A".equals(key))
                 continue;
             keyword[i] = key;
+        }
+        if(keyword[0].length() + keyword[1].length() + keyword[2].length() + keyword[3].length() == 0){
+            PrintWriter writer = response.getWriter();
+            writer.print("{}");
+            return;
         }
 
         try{
@@ -63,7 +68,7 @@ public class LUMatServlet extends HttpServlet
             writer.print(json);
         }catch(Exception ex){
             PrintWriter writer = response.getWriter();
-            writer.print("");
+            writer.print("{}");
         }
 
     }

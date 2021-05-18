@@ -1,11 +1,9 @@
 
 const plmUrl = window.location.protocol+'//'+window.location.hostname;
 const drawUrl = window.location.protocol+'//'+window.location.host+'/'
-    + (window.location.pathname.split('/').length>2?window.location.pathname.split('/')[1]:'');
-let gXml = "";
+    + (window.location.pathname.split('/').length>2?window.location.pathname.split('/')[1]+'/':'');
 let iframe;
-
-const defaultXml = '<mxGraphModel dx="1285" dy="914" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="826" pageHeight="1169" background="#ffffff" math="0" shadow="0"><root><mxCell id="0"/><mxCell id="1" parent="0"/><mxCell id="4" value="&lt;b&gt;LU MAT. INFORMATION&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFCC;" parent="1" vertex="1"><mxGeometry x="20" y="120" width="138" height="16" as="geometry"/></mxCell><mxCell id="5" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#ffffff;" parent="1" vertex="1"><mxGeometry x="20" y="136" width="138" height="284" as="geometry"/></mxCell><mxCell id="6" value="&lt;b&gt;BRUSH TYPE&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFCC;" parent="1" vertex="1"><mxGeometry x="20" y="420" width="138" height="15" as="geometry"/></mxCell><mxCell id="7" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#ffffff;" parent="1" vertex="1"><mxGeometry x="20" y="435" width="138" height="72" as="geometry"/></mxCell><mxCell id="8" value="TEMP. CHECKING SPOTS" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1"><mxGeometry x="821" y="120" width="197" height="30" as="geometry"/></mxCell><mxCell id="9" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#e51400;fontColor=#ffffff;strokeColor=none;" parent="1" vertex="1"><mxGeometry x="827" y="127" width="16" height="16" as="geometry"/></mxCell><mxCell id="10" value="Mark &quot;M&quot; ON AUTO PROCESS" style="rounded=0;whiteSpace=wrap;html=1;align=right;" parent="1" vertex="1"><mxGeometry x="821" y="150" width="197" height="30" as="geometry"/></mxCell><mxCell id="11" value="&lt;b&gt;&lt;font color=&quot;#ffffff&quot;&gt;M&lt;/font&gt;&lt;/b&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;strokeColor=#FFFFFF;fillColor=#92D050;" parent="1" vertex="1"><mxGeometry x="824" y="153.75" width="22.5" height="22.5" as="geometry"/></mxCell><mxCell id="12" value="&lt;p style=&quot;margin-top: 0pt ; margin-bottom: 0pt ; margin-left: 0in ; text-indent: 0in&quot;&gt;&lt;br&gt;&lt;/p&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fillColor=#ffffff;strokeColor=#000000;" parent="1" vertex="1"><mxGeometry x="821" y="180" width="197" height="160" as="geometry"/></mxCell><mxCell id="13" value="&lt;b&gt;ATTACHING SEQUENCE&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFCC;" parent="1" vertex="1"><mxGeometry x="821" y="340" width="197" height="15" as="geometry"/></mxCell><mxCell id="14" value="&lt;p style=&quot;margin-top: 0pt ; margin-bottom: 0pt ; margin-left: 0in ; text-indent: 0in ; direction: ltr ; unicode-bidi: embed&quot;&gt;&lt;br&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;connectable=1;" parent="1" vertex="1"><mxGeometry x="821" y="355" width="197" height="152" as="geometry"/></mxCell><mxCell id="15" value="" style="endArrow=none;html=1;exitX=0;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0;entryDx=0;entryDy=0;rounded=0;" parent="1" edge="1"><mxGeometry width="50" height="50" relative="1" as="geometry"><mxPoint x="20" y="120" as="sourcePoint"/><mxPoint x="1018" y="120" as="targetPoint"/></mxGeometry></mxCell><mxCell id="16" value="" style="endArrow=none;html=1;" parent="1" edge="1"><mxGeometry width="50" height="50" relative="1" as="geometry"><mxPoint x="158" y="507" as="sourcePoint"/><mxPoint x="821" y="507" as="targetPoint"/></mxGeometry></mxCell><mxCell id="17" value="" style="endArrow=none;html=1;entryX=1;entryY=0;entryDx=0;entryDy=0;rounded=0;" parent="1" edge="1"><mxGeometry width="50" height="50" relative="1" as="geometry"><mxPoint x="1018" y="507" as="sourcePoint"/><mxPoint x="1018" y="120" as="targetPoint"/></mxGeometry></mxCell><mxCell id="18" value="" style="endArrow=none;html=1;entryX=1;entryY=0;entryDx=0;entryDy=0;rounded=0;" parent="1" edge="1"><mxGeometry width="50" height="50" relative="1" as="geometry"><mxPoint x="20" y="507" as="sourcePoint"/><mxPoint x="20" y="120" as="targetPoint"/></mxGeometry></mxCell></root></mxGraphModel>';
+let gXml = '<mxGraphModel dx="1285" dy="914" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="826" pageHeight="1169" background="#ffffff" math="0" shadow="0"><root><mxCell id="0"/><mxCell id="1" parent="0"/><mxCell id="4" value="&lt;b&gt;LU MAT. INFORMATION&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFCC;" parent="1" vertex="1"><mxGeometry x="20" y="120" width="138" height="16" as="geometry"/></mxCell><mxCell id="5" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#ffffff;" parent="1" vertex="1"><mxGeometry x="20" y="136" width="138" height="284" as="geometry"/></mxCell><mxCell id="6" value="&lt;b&gt;BRUSH TYPE&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFCC;" parent="1" vertex="1"><mxGeometry x="20" y="420" width="138" height="15" as="geometry"/></mxCell><mxCell id="7" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#ffffff;" parent="1" vertex="1"><mxGeometry x="20" y="435" width="138" height="72" as="geometry"/></mxCell><mxCell id="8" value="TEMP. CHECKING SPOTS" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1"><mxGeometry x="821" y="120" width="197" height="30" as="geometry"/></mxCell><mxCell id="9" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#e51400;fontColor=#ffffff;strokeColor=none;" parent="1" vertex="1"><mxGeometry x="827" y="127" width="16" height="16" as="geometry"/></mxCell><mxCell id="10" value="Mark &quot;M&quot; ON AUTO PROCESS" style="rounded=0;whiteSpace=wrap;html=1;align=right;" parent="1" vertex="1"><mxGeometry x="821" y="150" width="197" height="30" as="geometry"/></mxCell><mxCell id="11" value="&lt;b&gt;&lt;font color=&quot;#ffffff&quot;&gt;M&lt;/font&gt;&lt;/b&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;strokeColor=#FFFFFF;fillColor=#92D050;" parent="1" vertex="1"><mxGeometry x="824" y="153.75" width="22.5" height="22.5" as="geometry"/></mxCell><mxCell id="12" value="&lt;p style=&quot;margin-top: 0pt ; margin-bottom: 0pt ; margin-left: 0in ; text-indent: 0in&quot;&gt;&lt;br&gt;&lt;/p&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fillColor=#ffffff;strokeColor=#000000;" parent="1" vertex="1"><mxGeometry x="821" y="180" width="197" height="160" as="geometry"/></mxCell><mxCell id="13" value="&lt;b&gt;ATTACHING SEQUENCE&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFCC;" parent="1" vertex="1"><mxGeometry x="821" y="340" width="197" height="15" as="geometry"/></mxCell><mxCell id="14" value="&lt;p style=&quot;margin-top: 0pt ; margin-bottom: 0pt ; margin-left: 0in ; text-indent: 0in ; direction: ltr ; unicode-bidi: embed&quot;&gt;&lt;br&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;connectable=1;" parent="1" vertex="1"><mxGeometry x="821" y="355" width="197" height="152" as="geometry"/></mxCell><mxCell id="15" value="" style="endArrow=none;html=1;exitX=0;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0;entryDx=0;entryDy=0;rounded=0;" parent="1" edge="1"><mxGeometry width="50" height="50" relative="1" as="geometry"><mxPoint x="20" y="120" as="sourcePoint"/><mxPoint x="1018" y="120" as="targetPoint"/></mxGeometry></mxCell><mxCell id="16" value="" style="endArrow=none;html=1;" parent="1" edge="1"><mxGeometry width="50" height="50" relative="1" as="geometry"><mxPoint x="158" y="507" as="sourcePoint"/><mxPoint x="821" y="507" as="targetPoint"/></mxGeometry></mxCell><mxCell id="17" value="" style="endArrow=none;html=1;entryX=1;entryY=0;entryDx=0;entryDy=0;rounded=0;" parent="1" edge="1"><mxGeometry width="50" height="50" relative="1" as="geometry"><mxPoint x="1018" y="507" as="sourcePoint"/><mxPoint x="1018" y="120" as="targetPoint"/></mxGeometry></mxCell><mxCell id="18" value="" style="endArrow=none;html=1;entryX=1;entryY=0;entryDx=0;entryDy=0;rounded=0;" parent="1" edge="1"><mxGeometry width="50" height="50" relative="1" as="geometry"><mxPoint x="20" y="507" as="sourcePoint"/><mxPoint x="20" y="120" as="targetPoint"/></mxGeometry></mxCell></root></mxGraphModel>';
 
 window.onload = function () {
     window.resizeTo(1620, 1000);
@@ -18,7 +16,7 @@ window.onload = function () {
     iframe.setAttribute(
         "src",
         drawUrl +
-        "/?splash=0&clibs=U"+encodeURIComponent(drawUrl+'/stencils/bpfc/BPFC')+"&embed=1&ui=sketch&spin=1&proto=json&configure=1&ruler=1&zoom=4&viewbox=" +
+        "?splash=0&clibs=U"+encodeURIComponent(drawUrl+'stencils/bpfc/BPFC')+"&embed=1&ui=sketch&spin=1&proto=json&configure=1&ruler=1&zoom=4&viewbox=" +
         encodeURIComponent('{"x":3,"y":100,"width":1000,"height":1000}')
     );
 
@@ -30,7 +28,7 @@ function postMessageBpfc(evt) {
     let msg = JSON.parse(evt.data);
     switch (msg.event) {
         case "getXml":
-            gXml = msg.mxgraph;
+            if(msg.mxgraph) gXml = msg.mxgraph;
             try{
                 popMat.data = JSON.parse(msg.bomData);
             }catch{alert("Invalid format(bomData)");}
@@ -39,7 +37,6 @@ function postMessageBpfc(evt) {
                 popPrc.data = JSON.parse(msg.procData);
             }catch{alert("Invalid format(procData)");}
 
-            if(!gXml) gXml = defaultXml;
             break;
         case "configure":
             editor.configure();
@@ -139,6 +136,41 @@ let editor = {
         data = decodeURIComponent(data);
         return data;
     },
+    getNewId : (xmlDoc) => {
+        let res = 0;
+        let mxCells = xmlDoc.querySelectorAll("mxCell");
+        for(let mxCell of mxCells){
+            let cur = Number(mxCell.id);
+            res = Math.max(res,cur);
+        }
+        return res+1;
+    },
+    getPos : (xmlDoc,category) => {
+        let res = 0;
+        let cur = 0;
+        let mxGeometrys = xmlDoc.querySelectorAll("mxGeometry");
+        for(let mxGeometry of mxGeometrys){
+            switch(category){
+                case 'top':
+                    cur = Number(mxGeometry.getAttribute('y'));
+                    res = Math.min(res,cur);
+                    break;
+                case 'bottom':
+                    cur = Number(mxGeometry.getAttribute('y'))  + Number(mxGeometry.getAttribute('height'));
+                    res = Math.max(res,cur);
+                    break;
+                case 'left':
+                    cur = Number(mxGeometry.getAttribute('x')) ;
+                    res = Math.min(res,cur);
+                    break;
+                case 'right':
+                    cur = Number(mxGeometry.getAttribute('x'))  + Number(mxGeometry.getAttribute('width'));
+                    res = Math.max(res,cur);
+                    break;
+            }
+        }
+        return res;
+    }
 };
 
 let custom = {
@@ -191,6 +223,7 @@ let popMat = {
     },
     onClickOk: async () => {
         // iframe load action을 다시 날려야 함
+        spinner.show();
         let xmlDoc = mxUtils.parseXml(gXml);
         let luMatParam = [];
         for (let mat of document.querySelectorAll(
@@ -203,9 +236,7 @@ let popMat = {
                 .textContent;
             luMatParam.push(_mcs_number);
             let mxCell = xmlDoc.createElement("mxCell");
-            let mxCells = xmlDoc.querySelectorAll("mxCell");
-
-            mxCell.id = Number(mxCells[mxCells.length - 1].id) + 1;
+            mxCell.id = editor.getNewId(xmlDoc);
             mxCell.setAttribute("value", `<b>${_mat_name}(#${_mat_cd})</b>`);
             mxCell.setAttribute(
                 "style",
@@ -217,16 +248,8 @@ let popMat = {
             mxCell.innerHTML = `<mxGeometry x="${(popMat.loc.x += 150)}" y="${popMat.loc.y}" width="140" height="60" as="geometry"/>`;
             xmlDoc.querySelector("root").appendChild(mxCell);
         }
-        let luMat = await popMat.retrieveLuMat(luMatParam);
-        let mxCells = xmlDoc.querySelectorAll("mxCell");
-        let mxCellLuMat = xmlDoc.createElement("mxCell");
-        mxCellLuMat.id = Number(mxCells[mxCells.length - 1].id) + 1;
-        mxCellLuMat.setAttribute("value", luMat);
-        mxCellLuMat.setAttribute('style','text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;');
-        mxCellLuMat.setAttribute("vertex", "1");
-        mxCellLuMat.setAttribute("parent", "1");
-        mxCellLuMat.innerHTML = `<mxGeometry x="${popMat.loc.x}" y="${popMat.loc.y+50}" width="650" height="180"  as="geometry"/>`;
-        xmlDoc.querySelector("root").appendChild(mxCellLuMat);
+
+        await popMat.addLuMatMxCell(luMatParam,xmlDoc);
 
         popMat.loc.x += 50;
         popMat.loc.y += 50;
@@ -238,12 +261,25 @@ let popMat = {
 
         document.querySelector("#popMat").style.display = "none";
         document.querySelector("#popMatContents").innerHTML = "";
+        spinner.hide();
     },
     onClickCancel: () => {
         document.querySelector("#popMatContents").innerHTML = "";
         document.querySelector("#popMat").style.display = "none";
     },
-
+    addLuMatMxCell : async (luMatParam,xmlDoc)=>{
+        let luMat = await popMat.retrieveLuMat(luMatParam);
+        if(luMat !== ''){
+            let mxCellLuMat = xmlDoc.createElement("mxCell");
+            mxCellLuMat.id = editor.getNewId(xmlDoc);
+            mxCellLuMat.setAttribute("value", luMat);
+            mxCellLuMat.setAttribute('style','text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;');
+            mxCellLuMat.setAttribute("vertex", "1");
+            mxCellLuMat.setAttribute("parent", "1");
+            mxCellLuMat.innerHTML = `<mxGeometry x="${editor.getPos(xmlDoc,'left')}" y="${editor.getPos(xmlDoc,'bottom')+10}" width="650" height="100"  as="geometry"/>`;
+            xmlDoc.querySelector("root").appendChild(mxCellLuMat);
+        }
+    },
     retrieveLuMat: async (param) => {
         let response = await fetch(drawUrl+'lumat',{
             method:'POST',
@@ -254,6 +290,7 @@ let popMat = {
         });
         if (response.ok) {
             let res = '';
+
             let json = await response.json();
             for(let key of Object.keys(json)){
                 res = res + key + ' : ' + json[key]+'\n\n';
