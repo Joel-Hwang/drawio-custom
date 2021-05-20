@@ -111,9 +111,9 @@ let editor = {
         let xmlDoc = mxUtils.parseXml(msg.xml);
         let encryptedModel = xmlDoc.querySelector("diagram").textContent;
         let decryptedModel = editor.decode(encryptedModel);
-
+        let lineLayout = editor.getLineLayout(xmlDoc);
         opener.postMessage(
-            { action: "saveImg", img, decryptedModel },
+            { action: "saveImg", img, decryptedModel, lineLayout },
             plmUrl
         );
     },
@@ -138,9 +138,9 @@ let editor = {
     },
     getNewId : (xmlDoc) => {
         let res = 0;
-        let mxCells = xmlDoc.querySelectorAll("mxCell");
-        for(let mxCell of mxCells){
-            let cur = Number(mxCell.id);
+        let children = xmlDoc.querySelectorAll("*");
+        for(let child of children){
+            let cur = Number(child.id?child.id:0);
             res = Math.max(res,cur);
         }
         return res+1;
@@ -170,6 +170,26 @@ let editor = {
             }
         }
         return res;
+    },
+    getLineLayout : (xmlDoc) => {
+        let res = {
+            _1st:[],
+            _2nd:[],
+            _3rd:[]};
+
+            let obj = {
+            _part_id:'asdasdasd',  //popMat.data[].id
+            _mat_name:'asdasd',    //popMat.data[]._mat_name
+            _part_type:'UPPER',    //초록색 범위로 산정
+            _process_detail:'asdasd',  //popPrcs.data[].process_name
+            _dry_yn:'no',  //prcs data
+            _chamber:'hot' //prcs data
+        };
+
+        res._1st.push([obj]);
+        res._2nd.push([obj]);
+        res._3rd.push([obj]);
+        return {};
     }
 };
 
@@ -197,16 +217,16 @@ let popMat = {
         let popMatContents = document.querySelector("#popMatContents");
         let tmp = document.querySelector("#matCard");
         for (let mat of popMat.data) {
-            tmp.content.querySelector('div[name="_part_type"').id = mat.id;
-            tmp.content.querySelector('div[name="_part_type"').textContent =
+            tmp.content.querySelector('div[name="_part_type"]').id = mat.id;
+            tmp.content.querySelector('div[name="_part_type"]').textContent =
                 mat._part_type;
-            tmp.content.querySelector('div[name="_mat_name"').textContent =
+            tmp.content.querySelector('div[name="_mat_name"]').textContent =
                 mat._mat_name;
-            tmp.content.querySelector('div[name="_mat_cd"').textContent =
+            tmp.content.querySelector('div[name="_mat_cd"]').textContent =
                 mat._mat_cd;
-            tmp.content.querySelector('div[name="_part_name"').textContent =
+            tmp.content.querySelector('div[name="_part_name"]').textContent =
                 mat._part_name;
-            tmp.content.querySelector('div[name="_mcs_number"').textContent =
+            tmp.content.querySelector('div[name="_mcs_number"]').textContent =
                 mat._mcs_number;
             let clone = tmp.content.cloneNode(true);
             popMatContents.appendChild(clone);
@@ -234,6 +254,7 @@ let popMat = {
                 .textContent;
             let _mcs_number = mat.querySelector('div[name="_mcs_number"]')
                 .textContent;
+            let _part_id = mat.querySelector('div[name="_part_type"]').id;
             luMatParam.push(_mcs_number);
             let mxCell = xmlDoc.createElement("mxCell");
             mxCell.id = editor.getNewId(xmlDoc);
@@ -246,6 +267,8 @@ let popMat = {
             mxCell.setAttribute("parent", "1");
 
             mxCell.innerHTML = `<mxGeometry x="${(popMat.loc.x += 150)}" y="${popMat.loc.y}" width="140" height="60" as="geometry"/>`;
+            //let object = xmlDoc.createElement("object");
+            //object.
             xmlDoc.querySelector("root").appendChild(mxCell);
         }
 
@@ -304,7 +327,11 @@ let popMat = {
 };
 
 let popPrc = {
-    data: [],
+    data: [{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+          ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+          ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+          ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+    ],
     loc: {
         x: 40,
         y: 210,
@@ -354,25 +381,20 @@ let popPrc = {
             let mxCells = xmlDoc.querySelectorAll("mxCell");
 
             let mxObj = xmlDoc.createElement('object');
-            mxObj.id = Number(mxCells[mxCells.length - 1].id) + 1;
+            mxObj.id = editor.getNewId(xmlDoc);
             mxObj.setAttribute("dry","no");
-            mxObj.setAttribute("chamber","");
+            mxObj.setAttribute("chamber","no");
             let mxCellGroup = xmlDoc.createElement("mxCell");
             mxCellGroup.setAttribute("style", "group");
             mxCellGroup.setAttribute("vertex", "1");
             mxCellGroup.setAttribute("parent", "1");
-            mxCellGroup.innerHTML = `<mxGeometry x="${(popPrc.loc.x += 150)}" y="${
-                popPrc.loc.y
-            }" width="140" height="60" as="geometry"/>`;
+            mxCellGroup.innerHTML = `<mxGeometry x="${(popPrc.loc.x += 150)}" y="${popPrc.loc.y}" width="20" height="20" as="geometry"/>`;
             mxObj.appendChild(mxCellGroup);
             xmlDoc.querySelector("root").appendChild(mxObj);
 
             let mxCell = xmlDoc.createElement("mxCell");
-            mxCell.id = Number(mxObj.id) + 1;
-            mxCell.setAttribute(
-                "value",
-                `${_proc_name} ${_chemical} \n(${_tmpr})`
-            );
+            mxCell.id = editor.getNewId(xmlDoc);
+            mxCell.setAttribute('value',`${_proc_name} ${_chemical} \n(${_tmpr})`);
             mxCell.setAttribute("style", "rounded=0;whiteSpace=wrap;html=1;");
             mxCell.setAttribute("vertex", "1");
             mxCell.setAttribute("parent", mxObj.id);
@@ -380,7 +402,7 @@ let popPrc = {
             xmlDoc.querySelector("root").appendChild(mxCell);
 
             let mxCellBrush = xmlDoc.createElement("mxCell");
-            mxCellBrush.id = Number(mxCell.id) + 1;
+            mxCellBrush.id = editor.getNewId(xmlDoc);
             mxCellBrush.setAttribute("value", _brush);
             mxCellBrush.setAttribute("vertex", "1");
             mxCellBrush.setAttribute("parent", mxObj.id);
