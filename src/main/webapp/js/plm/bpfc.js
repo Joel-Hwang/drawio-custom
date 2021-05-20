@@ -111,7 +111,7 @@ let editor = {
         let xmlDoc = mxUtils.parseXml(msg.xml);
         let encryptedModel = xmlDoc.querySelector("diagram").textContent;
         let decryptedModel = editor.decode(encryptedModel);
-        let lineLayout = editor.getLineLayout(xmlDoc);
+        let lineLayout = gParser.getLineLayout(decryptedModel);
         opener.postMessage(
             { action: "saveImg", img, decryptedModel, lineLayout },
             plmUrl
@@ -171,13 +171,32 @@ let editor = {
         }
         return res;
     },
-    getLineLayout : (xmlDoc) => {
+
+};
+
+let gParser = {
+    getLineLayout : (decryptedModel) => {
+        let xmlDoc = mxUtils.parseXml(decryptedModel);
+        //part type x, y 좌표 get
+        let partTypes = gParser.getPartTypes(xmlDoc);
+        //part type 안에 있는 material get
+        let materials = gParser.getMaterials(xmlDoc);
+        //material에 part Type 매칭
+        gParser.updateMaterialWithPartType(partTypes,materials);
+        //process 들만 뽑아서 y, x order by
+        let prcss = gParser.getPrcss(xmlDoc);
+        //process에 material 매칭
+        gParser.updatePrcsWithMaterial(materials,prcss);
+
+        //Array.from(xmlDoc.querySelectorAll('object')).filter((n)=>{ n.getAttribute('name','part_type')});
+
+        console.log(prcss);
         let res = {
             _1st:[],
             _2nd:[],
             _3rd:[]};
 
-            let obj = {
+        let obj = {
             _part_id:'asdasdasd',  //popMat.data[].id
             _mat_name:'asdasd',    //popMat.data[]._mat_name
             _part_type:'UPPER',    //초록색 범위로 산정
@@ -190,7 +209,89 @@ let editor = {
         res._2nd.push([obj]);
         res._3rd.push([obj]);
         return {};
-    }
+    },
+    getPartTypes : (xmlDoc) => {
+        let partTypes = [];
+        let tmpObj = Array.from(xmlDoc.querySelectorAll('object'))
+            .filter((n) => n.getAttribute('type') === 'part_type' );
+
+        for(let obj of tmpObj){
+            let name = obj.getAttribute('label');
+            let geo = obj.querySelector('mxCell mxGeometry');
+            let width = Number(geo.getAttribute('width'));
+            //let height = Number(geo.getAttribute('height'));
+            let x = Number(geo.getAttribute('x'));
+            let xEnd = x+width;
+            //let y = Number(geo.getAttribute('y'));
+            partTypes.push({name,x,xEnd});
+        }
+        partTypes.sort( (a,b) => a.x - b.x );
+        return partTypes;
+    },
+    getMaterials : (xmlDoc) => {
+        let materials = [];
+        let tmpObj = Array.from(xmlDoc.querySelectorAll('object'))
+            .filter((n) => n.getAttribute('type') === 'material' );
+        for(let obj of tmpObj){
+            let _part_id = obj.getAttribute('_part_id');
+            let _mat_name = obj.getAttribute('_mat_name');
+            let geo = obj.querySelector('mxCell mxGeometry');
+            let width = Number(geo.getAttribute('width'));
+            let x = Number(geo.getAttribute('x'));
+            let xEnd = x+width;
+            materials.push({_part_id,_mat_name,x,xEnd});
+        }
+
+        materials.sort( (a,b) => a.x - b.x);
+        return materials;
+    },
+    updateMaterialWithPartType : (partTypes, materials) => {
+        for(let material of materials){
+            let i = 0;
+            for(i; i < partTypes.length; i++){
+                if(partTypes[i].xEnd >= material.xEnd){
+                    material.partType = partTypes[i].name;
+                    break;
+                }
+            }
+        }
+    },
+    getPrcss: (xmlDoc) => {
+        let prcss = [];
+        let tmpObj = Array.from(xmlDoc.querySelectorAll('object'))
+            .filter((n) => n.hasAttribute('dry') );
+        for(let obj of tmpObj){
+            let dry = obj.getAttribute('dry');
+            let chamber = obj.getAttribute('chamber');
+            let children = Array.from(xmlDoc.querySelectorAll('mxCell'))
+                .filter((n) => n.getAttribute('parent') == obj.id );
+            let geo = children[0].querySelector('mxGeometry');
+            let _proc_name = children[0].getAttribute('value').split("\n")[0];
+            let geo2 = obj.querySelector('mxCell mxGeometry');
+            let width = Number(geo.getAttribute('width'));
+            let height = Number(geo.getAttribute('height'));
+            let x = Number(geo2.getAttribute('x'));
+            let xEnd = x+width;
+            let y = Number(geo2.getAttribute('y'));
+            let yEnd = y+height;
+            prcss.push({dry,chamber,_proc_name,x,xEnd,y,yEnd});
+        }
+        prcss.sort( (a,b) => {(a.y !== b.y)? a.y - b.y : a.x - b.x });
+        return prcss;
+    },
+    updatePrcsWithMaterial : (materials, prcss) => {
+        for(let prcs of prcss){
+            for(let material of materials){
+                if(material.xEnd >= prcs.xEnd){
+                    prcs.partType = material.partType;
+                    prcs._mat_name = material._mat_name;
+                    prcs._part_id = material._part_id;
+                    break;
+                }
+            }
+        }
+    },
+
 };
 
 let custom = {
@@ -256,20 +357,24 @@ let popMat = {
                 .textContent;
             let _part_id = mat.querySelector('div[name="_part_type"]').id;
             luMatParam.push(_mcs_number);
+
+            let mxObj = xmlDoc.createElement('object');
+            mxObj.id = editor.getNewId(xmlDoc);
+            mxObj.setAttribute("type","material");
+            mxObj.setAttribute("_part_id",_part_id);
+            mxObj.setAttribute("_mat_name",_mat_name);
+            mxObj.setAttribute("label",`<b>${_mat_name}(#${_mat_cd})</b>`);
+
             let mxCell = xmlDoc.createElement("mxCell");
-            mxCell.id = editor.getNewId(xmlDoc);
-            mxCell.setAttribute("value", `<b>${_mat_name}(#${_mat_cd})</b>`);
             mxCell.setAttribute(
                 "style",
                 "rounded=1;whiteSpace=wrap;html=1;arcSize=25;fillColor=#ffff99;strokeColor=none;"
             );
             mxCell.setAttribute("vertex", "1");
             mxCell.setAttribute("parent", "1");
-
             mxCell.innerHTML = `<mxGeometry x="${(popMat.loc.x += 150)}" y="${popMat.loc.y}" width="140" height="60" as="geometry"/>`;
-            //let object = xmlDoc.createElement("object");
-            //object.
-            xmlDoc.querySelector("root").appendChild(mxCell);
+            mxObj.appendChild(mxCell);
+            xmlDoc.querySelector("root").appendChild(mxObj);
         }
 
         await popMat.addLuMatMxCell(luMatParam,xmlDoc);
@@ -377,8 +482,6 @@ let popPrc = {
                 .textContent;
             let _brush = elem.querySelector('input[name="_brush"]').value;
             let _tmpr = elem.querySelector('input[name="_tmpr"]').value;
-
-            let mxCells = xmlDoc.querySelectorAll("mxCell");
 
             let mxObj = xmlDoc.createElement('object');
             mxObj.id = editor.getNewId(xmlDoc);
