@@ -188,27 +188,9 @@ let gParser = {
         //process에 material 매칭
         gParser.updatePrcsWithMaterial(materials,prcss);
 
-        //Array.from(xmlDoc.querySelectorAll('object')).filter((n)=>{ n.getAttribute('name','part_type')});
-
-        console.log(prcss);
-        let res = {
-            _1st:[],
-            _2nd:[],
-            _3rd:[]};
-
-        let obj = {
-            _part_id:'asdasdasd',  //popMat.data[].id
-            _mat_name:'asdasd',    //popMat.data[]._mat_name
-            _part_type:'UPPER',    //초록색 범위로 산정
-            _process_detail:'asdasd',  //popPrcs.data[].process_name
-            _dry_yn:'no',  //prcs data
-            _chamber:'hot' //prcs data
-        };
-
-        res._1st.push([obj]);
-        res._2nd.push([obj]);
-        res._3rd.push([obj]);
-        return {};
+        let res = {_1st:[],_2nd:[],_3rd:[]};
+        res._1st.push(prcss);
+        return res;
     },
     getPartTypes : (xmlDoc) => {
         let partTypes = [];
@@ -246,8 +228,8 @@ let gParser = {
         return materials;
     },
     updateMaterialWithPartType : (partTypes, materials) => {
+        let i = 0;
         for(let material of materials){
-            let i = 0;
             for(i; i < partTypes.length; i++){
                 if(partTypes[i].xEnd >= material.xEnd){
                     material.partType = partTypes[i].name;
@@ -276,7 +258,11 @@ let gParser = {
             let yEnd = y+height;
             prcss.push({dry,chamber,_proc_name,x,xEnd,y,yEnd});
         }
-        prcss.sort( (a,b) => {(a.y !== b.y)? a.y - b.y : a.x - b.x });
+        prcss.sort( (a,b) => {
+            if(a.y > b.y) return 1;
+            if(a.y < b.y) return -1;
+            return a.x-b.x;
+        } );
         return prcss;
     },
     updatePrcsWithMaterial : (materials, prcss) => {
@@ -409,6 +395,7 @@ let popMat = {
         }
     },
     retrieveLuMat: async (param) => {
+        return ''; //FIX ME
         let response = await fetch(drawUrl+'lumat',{
             method:'POST',
             headers: {
@@ -426,7 +413,7 @@ let popMat = {
             return res;
         } else {
             alert("HTTP-Error: " + response.status);
-            return null;
+            return '';
         }
     }
 };
