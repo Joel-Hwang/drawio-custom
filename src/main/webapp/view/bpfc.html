@@ -3,351 +3,372 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <style type="text/css">
-    html,
-    body,
-    #wrapper {
-      height: 100%;
-      width: 100%;
-      margin: 0;
-      padding: 0;
-      border: 0;
-    }
-    table#wrapper {
-      height: 75%;
-    }
-    #wrapper td {
-      vertical-align: middle;
-      text-align: center;
-      cursor: pointer;
-    }
-    iframe {
-      border: 0;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      width: 100%;
-      height: 100%;
-    }
+    <meta charset="UTF-8">
+    <style type="text/css">
+        html,
+        body,
+        #wrapper {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
 
-    #spinner{
-      width: 100%;
-      height: 100%;
-      background-color: rgba(255,255,255,.8);
-      display: none;
-      position: absolute;
-      z-index: 999;
-    }
+        table#wrapper {
+            height: 75%;
+        }
 
-    .spinner {
-      width: 60px;
-      height: 60px;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%,-50%);
-      z-index: 5;
-    }
-    .spinner:before{
-      animation-delay: -1s!important;;
-    }
-    .spinner:before,.spinner:after{
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      background-color: #cc1c1c;
-      content: '';
-      opacity: .6;
-      position: absolute;
-      top: 0;
-      left: 0;
-      animation: sk-bounce 2s infinite ease-in-out;
-    }
+        #wrapper td {
+            vertical-align: middle;
+            text-align: center;
+            cursor: pointer;
+        }
 
-    @keyframes sk-bounce{
-      0%,100%{transform:scale(0)}
-      50%{transform:scale(1)}}
+        iframe {
+            border: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+        }
 
-    .custom-grp {
-      position: absolute;
-      z-index: 1;
-      top: 35px;
-      left: 723px;
-      padding: 0 6px;
-      opacity: 0.6;
-    }
-    .custom-btn {
-      color: black;
-      cursor: pointer;
-      font-size: 14px;
-      padding: 5px 10px;
-      display: inline-block;
-    }
-    .custom-btn:hover {
-      background-color: rgb(220, 220, 220);
-    }
+        #spinner {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, .8);
+            display: none;
+            position: absolute;
+            z-index: 999;
+        }
 
-    /*modal*/
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(255, 255, 255, 0.9);
-    }
+        .spinner {
+            width: 60px;
+            height: 60px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+        }
 
-    .modal-content {
-      background-color: #fefefe;
-      margin: 15% auto;
-      width: 70%;
-      padding: 30px;
-      border: 1px solid #acacac;
-      -webkit-box-shadow: 0px 0px 2px 2px #d5d5d5;
-      -moz-box-shadow: 0px 0px 2px 2px #d5d5d5;
-      box-shadow: 0px 0px 2px 2px #d5d5d5;
-      _filter: progid:DXImageTransform.Microsoft.DropShadow(OffX=2, OffY=2, Color='#d5d5d5', Positive='true');
-      z-index: 2;
-    }
+        .spinner:before {
+            animation-delay: -1s !important;;
+        }
 
-    .geBtn {
-      background-image: none;
-      background-color: #f5f5f5;
-      border-radius: 2px;
-      border: 1px solid #d8d8d8;
-      color: #333;
-      cursor: default;
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.25px;
-      height: 29px;
-      line-height: 27px;
-      margin: 0 0 0 8px;
-      min-width: 72px;
-      outline: 0;
-      padding: 0 8px;
-      cursor: pointer;
-    }
+        .spinner:before, .spinner:after {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: #cc1c1c;
+            content: '';
+            opacity: .6;
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: sk-bounce 2s infinite ease-in-out;
+        }
 
-    .gePrimaryBtn {
-      background-color: #4d90fe;
-      background-image: linear-gradient(#4d90fe 0px, #4787ed 100%);
-      border: 1px solid #3079ed;
-      color: #fff;
-    }
+        @keyframes sk-bounce {
+            0%, 100% {
+                transform: scale(0)
+            }
+            50% {
+                transform: scale(1)
+            }
+        }
 
-    .search-area {
-      padding: 20px;
-      background-color: #f4f4f4;
-      margin-bottom: 5px;
-    }
+        .custom-grp {
+            position: absolute;
+            z-index: 1;
+            top: 35px;
+            left: 723px;
+            padding: 0 6px;
+            opacity: 0.6;
+        }
 
-    .card {
-      background: #fff;
-      padding: 20px;
-      margin: 8px;
-      border-radius: 5px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      transition: all 0.2s;
-      font-size: 10pt;
-      cursor: pointer;
-      min-width: 150px;
-    }
+        .custom-btn {
+            color: black;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 5px 10px;
+            display: inline-block;
+        }
 
-    .card.select {
-      background: rgb(74, 139, 245);
-      padding: 20px;
-      margin: 8px;
-      border-radius: 5px;
-      box-shadow: unset;
-      transition: all 0.2s;
-      font-size: 8pt;
-      color: white;
-      cursor: pointer;
-    }
+        .custom-btn:hover {
+            background-color: rgb(220, 220, 220);
+        }
 
-    .card div:nth-child(2) {
-      font-size: 8pt;
-      color: #6c757d;
-      display: inline;
-    }
-    .card div:nth-child(3) {
-      font-size: 8pt;
-      color: #6c757d;
-      display: inline;
-      float: right;
-    }
+        /*modal*/
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
 
-    .card.select div:nth-child(2) {
-      font-size: 8pt;
-      color: #fff;
-      display: inline;
-    }
-    .card.select div:nth-child(3) {
-      font-size: 8pt;
-      color: #fff;
-      display: inline;
-      float: right;
-    }
-  </style>
-  <script type="text/javascript" src="js/diagram-editor.js"></script>
-  <script type="text/javascript" src="js/mxClient.js"></script>
-  <script type="text/javascript" src="js/pako.min.js"></script>
-  <script type="text/javascript" src="js/plm/common.js"></script>
-  <script type="text/javascript" src="js/plm/bpfc.js" defer></script>
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            width: 70%;
+            padding: 30px;
+            border: 1px solid #acacac;
+            -webkit-box-shadow: 0px 0px 2px 2px #d5d5d5;
+            -moz-box-shadow: 0px 0px 2px 2px #d5d5d5;
+            box-shadow: 0px 0px 2px 2px #d5d5d5;
+            _filter: progid:DXImageTransform.Microsoft.DropShadow(OffX=2, OffY=2, Color='#d5d5d5', Positive='true');
+            z-index: 2;
+        }
+
+        .modal-grid {
+            max-height: 500px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            overflow: auto;
+        }
+
+        .geBtn {
+            background-image: none;
+            background-color: #f5f5f5;
+            border-radius: 2px;
+            border: 1px solid #d8d8d8;
+            color: #333;
+            cursor: default;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.25px;
+            height: 29px;
+            line-height: 27px;
+            margin: 0 0 0 8px;
+            min-width: 72px;
+            outline: 0;
+            padding: 0 8px;
+            cursor: pointer;
+        }
+
+        .gePrimaryBtn {
+            background-color: #4d90fe;
+            background-image: linear-gradient(#4d90fe 0px, #4787ed 100%);
+            border: 1px solid #3079ed;
+            color: #fff;
+        }
+
+        .search-area {
+            padding: 20px;
+            background-color: #f4f4f4;
+            margin-bottom: 5px;
+        }
+
+        .card {
+            width:19%;
+            background: #fff;
+            padding: 20px;
+            margin: 8px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+            font-size: 10pt;
+            cursor: pointer;
+            min-width: 150px;
+        }
+
+        .card.select {
+            background: rgb(74, 139, 245);
+            padding: 20px;
+            margin: 8px;
+            border-radius: 5px;
+            box-shadow: unset;
+            transition: all 0.2s;
+            font-size: 8pt;
+            color: white;
+            cursor: pointer;
+        }
+
+        .card div:nth-child(2) {
+            font-size: 8pt;
+            color: #6c757d;
+            display: inline;
+        }
+
+        .card div:nth-child(3) {
+            font-size: 8pt;
+            color: #6c757d;
+            display: inline;
+            float: right;
+        }
+
+        .card.select div:nth-child(2) {
+            font-size: 8pt;
+            color: #fff;
+            display: inline;
+        }
+
+        .card.select div:nth-child(3) {
+            font-size: 8pt;
+            color: #fff;
+            display: inline;
+            float: right;
+        }
+    </style>
+    <script type="text/javascript" src="js/diagram-editor.js"></script>
+    <script type="text/javascript" src="js/mxClient.js"></script>
+    <script type="text/javascript" src="js/pako.min.js"></script>
+    <script type="text/javascript" src="js/plm/common.js"></script>
+    <script type="text/javascript" src="js/plm/bpfc.js" defer></script>
 
 </head>
 <body>
 <div id="spinner">
-  <div class="spinner"></div>
+    <div class="spinner"></div>
 </div>
 <div class="custom-grp">
-  <a
-          class="custom-btn"
-          style="margin-left: 2px"
-          onclick="custom.onClickMat()"
-  >Material</a
-  >
+    <a
+            class="custom-btn"
+            style="margin-left: 2px"
+            onclick="custom.onClickMat()"
+    >Material</a
+    >
 
-  <a
-          class="custom-btn"
-          style="margin-right: 2px"
-          onclick="custom.onClickPrc()"
-  >Process</a
-  >
+    <a
+            class="custom-btn"
+            style="margin-right: 2px"
+            onclick="custom.onClickPrc()"
+    >Process</a
+    >
 </div>
 
 <div id="popMat" class="modal">
-  <!-- Modal content -->
-  <div class="modal-content">
-    <div>Material</div>
-    <div
-            class="area"
-            style="border-top: 1px solid rgb(51, 51, 51); margin-top: 8px"
-    >
-      <div
-              id="popMatContents"
-              style="
-              width: 100%;
-              display: flex;
-              flex-wrap: wrap;
-              justify-content: flex-start;
-            "
-      ></div>
-      <div style="text-align: right">
-        <button
-                class="geBtn"
-                style="margin-top: 10px"
-                onclick="popMat.onClickCancel()"
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div>Material</div>
+        <div
+                class="area"
+                style="border-top: 1px solid rgb(51, 51, 51); margin-top: 8px"
         >
-          Cancel
-        </button>
-        <button
-                class="geBtn gePrimaryBtn"
-                style="margin-top: 10px"
-                onclick="popMat.onClickOk()"
-        >
-          OK
-        </button>
-      </div>
+            <div class="search-area">
+                <div style="display: inline-block; margin-right: 40px;">
+                    <span>Mat.Name</span>
+                    <input type="text" name="srchMat" onkeyup="popMat.onSearch()">
+                </div>
+                <div style="display: inline-block; margin-right: 40px;">
+                    <span>Part Name</span>
+                    <input type="text" name="srchPartNm" onkeyup="popMat.onSearch()">
+                </div>
+                <div style="display: inline-block; margin-right: 40px;">
+                    <span>Part Type</span>
+                    <input type="text" name="srchPartType" onkeyup="popMat.onSearch()">
+                </div>
+
+            </div>
+            <div id="popMatContents" class="modal-grid"></div>
+            <div style="text-align: right">
+                <button
+                        class="geBtn"
+                        style="margin-top: 10px"
+                        onclick="popMat.onClickCancel()"
+                >
+                    Cancel
+                </button>
+                <button
+                        class="geBtn gePrimaryBtn"
+                        style="margin-top: 10px"
+                        onclick="popMat.onClickOk()"
+                >
+                    OK
+                </button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <div id="popPrc" class="modal">
-  <!-- Modal content -->
-  <div class="modal-content">
-    <div>Process Detail</div>
-    <div
-            class="area"
-            style="border-top: 1px solid rgb(51, 51, 51); margin-top: 8px"
-    >
-      <div class="search-area">
-        <div style="display: inline-block; margin-right: 40px;">
-          <span>Process</span>
-          <input type="text" name="srchPrc" onkeyup="popPrc.onSearch()">
-        </div>
-        <div style="display: inline-block;">
-          <span>Chemical</span>
-          <input type="text" name="srchChem" onkeyup="popPrc.onSearch()">
-        </div>
-      </div>
-      <div
-              id="popPrcContents"
-              style="
-              width: 100%;
-              display: flex;
-              flex-wrap: wrap;
-              justify-content: flex-start;
-            "
-      ></div>
-      <div style="text-align: right">
-        <button
-                class="geBtn"
-                style="margin-top: 10px"
-                onclick="popPrc.onClickCancel()"
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div>Process Detail</div>
+        <div
+                class="area"
+                style="border-top: 1px solid rgb(51, 51, 51); margin-top: 8px"
         >
-          Cancel
-        </button>
-        <button
-                class="geBtn gePrimaryBtn"
-                style="margin-top: 10px"
-                onclick="popPrc.onClickOk()"
-        >
-          OK
-        </button>
-      </div>
+            <div class="search-area">
+                <div style="display: inline-block; margin-right: 40px;">
+                    <span>Process</span>
+                    <input type="text" name="srchPrc" onkeyup="popPrc.onSearch()">
+                </div>
+                <div style="display: inline-block;">
+                    <span>Chemical</span>
+                    <input type="text" name="srchChem" onkeyup="popPrc.onSearch()">
+                </div>
+            </div>
+            <div id="popPrcContents" class="modal-grid"></div>
+            <div style="text-align: right">
+                <button
+                        class="geBtn"
+                        style="margin-top: 10px"
+                        onclick="popPrc.onClickCancel()"
+                >
+                    Cancel
+                </button>
+                <button
+                        class="geBtn gePrimaryBtn"
+                        style="margin-top: 10px"
+                        onclick="popPrc.onClickOk()"
+                >
+                    OK
+                </button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <template id="matCard">
-  <div class="card" onclick="popMat.onClickItem(this)">
-    <div name="_mat_name" style="font-size: 11pt; margin-bottom: 10px; max-width: 250px" id="">
-      CMP-SKIN ON (MWCMP001)
+    <div class="card" onclick="popMat.onClickItem(this)">
+        <div name="_mat_name" style="font-size: 11pt; margin-bottom: 10px; max-width: 250px" id="">
+            CMP-SKIN ON (MWCMP001)
+        </div>
+        <div name="_part_type">MIDSOLE</div>
+        <div name="_mat_cd">244309</div>
+        <div name="_mcs_number" style="display: none"></div>
+        <div name="_part_name" style="display: none"></div>
     </div>
-    <div name="_part_type">MIDSOLE</div>
-    <div name="_mat_cd">244309</div>
-    <div name="_mcs_number" style="display: none"></div>
-    <div name="_part_name" style="display: none"></div>
-  </div>
 </template>
 
 <template id="prcCard">
-  <div class="card" onclick="popPrc.onClickItem(this)">
-    <div id="" name="_proc_name" style="font-size: 11pt; margin-bottom: 10px">
-      CMP-SKIN ON (MWCMP001)
-    </div>
-    <div name="_chemical">MIDSOLE</div>
-    <div>
-      <span>Brush : </span>
-      <input
-              type="text"
-              name="_brush"
-              style="
+    <div class="card" onclick="popPrc.onClickItem(this)">
+        <div id="" name="_proc_name" style="font-size: 11pt; margin-bottom: 10px">
+            CMP-SKIN ON (MWCMP001)
+        </div>
+        <div name="_chemical">MIDSOLE</div>
+        <div>
+            <span>Brush : </span>
+            <input
+                    type="text"
+                    name="_brush"
+                    style="
               width: 15px;
               text-align: center;
               border: none;
               border-bottom: 1px solid #ababab;
             "
-              value="A"
-      />
+                    value="A"
+            />
+        </div>
+        <div style="margin-top: 10px">
+            <input
+                    type="text"
+                    name="_tmpr"
+                    style="width: 140px; border: none; border-bottom: 1px solid #ababab"
+                    value="45~50℃ x 2'15&quot; - 3'30&quot;"
+            />
+        </div>
     </div>
-    <div style="margin-top: 10px">
-      <input
-              type="text"
-              name="_tmpr"
-              style="width: 140px; border: none; border-bottom: 1px solid #ababab"
-              value="45~50℃ x 2'15&quot; - 3'30&quot;"
-      />
-    </div>
-  </div>
 </template>
 
 
