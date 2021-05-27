@@ -3,7 +3,10 @@ const plmUrl = window.location.protocol+'//'+window.location.hostname;
 const drawUrl = window.location.protocol+'//'+window.location.host+'/'
     + (window.location.pathname.split('/').length>2?window.location.pathname.split('/')[1]+'/':'');
 let iframe;
-let gXml = `<mxGraphModel dx="1092" dy="777" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="826" pageHeight="1169" background="#ffffff" math="0" shadow="0">
+let gXml = ''
+let bondType = '';
+let tmplAssembly = `
+<mxGraphModel dx="1092" dy="777" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="826" pageHeight="1169" background="#ffffff" math="0" shadow="0">
   <root>
     <mxCell id="0" />
     <mxCell id="1" parent="0" />
@@ -74,6 +77,68 @@ let gXml = `<mxGraphModel dx="1092" dy="777" grid="1" gridSize="10" guides="1" t
   </root>
 </mxGraphModel>
 `;
+let tmplStockfit = `
+<mxGraphModel dx="2048" dy="1214" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="826" pageHeight="1169" background="#ffffff" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+    <mxCell id="6" value="&lt;b&gt;BRUSH TYPE&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFCC;" parent="1" vertex="1">
+      <mxGeometry x="80" y="420" width="138" height="15" as="geometry" />
+    </mxCell>
+    <mxCell id="7" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#ffffff;" parent="1" vertex="1">
+      <mxGeometry x="80" y="435" width="138" height="118" as="geometry" />
+    </mxCell>
+    <mxCell id="8" value="&lt;font style=&quot;font-size: 11px&quot;&gt;TEMP. CHECKING SPOTS&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=center;" parent="1" vertex="1">
+      <mxGeometry x="830" y="120" width="180" height="30" as="geometry" />
+    </mxCell>
+    <mxCell id="9" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#e51400;fontColor=#ffffff;strokeColor=none;" parent="1" vertex="1">
+      <mxGeometry x="833.25" y="127" width="16" height="16" as="geometry" />
+    </mxCell>
+    <mxCell id="10" value="&lt;font style=&quot;font-size: 11px&quot;&gt;Mark &quot;M&quot; ON AUTO PROCESS&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=right;" parent="1" vertex="1">
+      <mxGeometry x="830" y="150" width="180" height="30" as="geometry" />
+    </mxCell>
+    <mxCell id="11" value="&lt;b&gt;&lt;font color=&quot;#ffffff&quot;&gt;M&lt;/font&gt;&lt;/b&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;strokeColor=#FFFFFF;fillColor=#92D050;" parent="1" vertex="1">
+      <mxGeometry x="833.25" y="156" width="18" height="18" as="geometry" />
+    </mxCell>
+    <mxCell id="13" value="&lt;b&gt;ATTACHING SEQUENCE&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFCC;" parent="1" vertex="1">
+      <mxGeometry x="860" y="420" width="150" height="15" as="geometry" />
+    </mxCell>
+    <mxCell id="15" value="" style="endArrow=none;html=1;exitX=0;exitY=0;exitDx=0;exitDy=0;rounded=0;" parent="1" edge="1">
+      <mxGeometry width="50" height="50" relative="1" as="geometry">
+        <mxPoint x="100" y="240" as="sourcePoint" />
+        <mxPoint x="100.00000000000045" y="240" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="60" value="" style="endArrow=none;html=1;" parent="1" edge="1">
+      <mxGeometry width="50" height="50" relative="1" as="geometry">
+        <mxPoint x="1010" y="553" as="sourcePoint" />
+        <mxPoint x="1010" y="120" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="61" value="" style="endArrow=none;html=1;" parent="1" edge="1">
+      <mxGeometry width="50" height="50" relative="1" as="geometry">
+        <mxPoint x="1010" y="553" as="sourcePoint" />
+        <mxPoint x="80" y="553" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="62" value="" style="endArrow=none;html=1;" parent="1" edge="1">
+      <mxGeometry width="50" height="50" relative="1" as="geometry">
+        <mxPoint x="1010" y="120" as="sourcePoint" />
+        <mxPoint x="80" y="120" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="63" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#ffffff;" parent="1" vertex="1">
+      <mxGeometry x="860" y="435" width="150" height="118" as="geometry" />
+    </mxCell>
+    <mxCell id="64" value="" style="endArrow=none;html=1;" edge="1" parent="1">
+      <mxGeometry width="50" height="50" relative="1" as="geometry">
+        <mxPoint x="80" y="553" as="sourcePoint" />
+        <mxPoint x="80" y="120" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+  </root>
+</mxGraphModel>
+`;
 window.onload = function () {
     window.resizeTo(1620, 1000);
 
@@ -97,6 +162,10 @@ function postMessageBpfc(evt) {
     let msg = JSON.parse(evt.data);
     switch (msg.event) {
         case "getXml":
+            bondType = msg.type;
+            if(bondType == 'ZX_BPFC_ASSEMBLY') gXml = tmplAssembly;
+            else gXml = tmplStockfit;
+
             if(msg.mxgraph) gXml = msg.mxgraph;
             try{
                 popMat.data = JSON.parse(msg.bomData);
@@ -328,13 +397,13 @@ let gParser = {
             let noUpdate = true;
             if(children.length == 2) noUpdate = false;
 
-            prcss.push({dry,chamber,_proc_name,x,xEnd,y,yEnd, noUpdate});
-           /* if(dry != 'no'){
-                prcss.push({dry,chamber,_proc_name,x,xEnd,y,yEnd, noUpdate});
-                prcss.push({dry:'yes',chamber,_proc_name:'',x,xEnd,y,yEnd,noUpdate:true});
+            //prcss.push({dry,chamber,_proc_name,x,xEnd,y,yEnd, noUpdate});
+            if(dry != 'no'){
+                prcss.push({dry:'no',chamber:'no',_proc_name,x,xEnd,y,yEnd, noUpdate});
+                prcss.push({dry:'yes',chamber,_proc_name:'Dry',x,xEnd,y,yEnd,noUpdate:true});
             }else{
-                prcss.push({dry:'',chamber:'',_proc_name,x,xEnd,y,yEnd, noUpdate});
-            }*/
+                prcss.push({dry,chamber,_proc_name,x,xEnd,y,yEnd, noUpdate});
+            }
 
 
 
@@ -544,7 +613,8 @@ let popMat = {
             xmlDoc.querySelector("root").appendChild(mxObj);
         }
 
-        await popMat.addLuMatMxCell(luMatParam,xmlDoc);
+        if(bondType == 'ZX_BPFC_Assembly')
+            await popMat.addLuMatMxCell(luMatParam,xmlDoc);
 
         popMat.loc.x += 50;
         popMat.loc.y += 50;
