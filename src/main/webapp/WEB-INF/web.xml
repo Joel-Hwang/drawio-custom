@@ -160,6 +160,14 @@
     <url-pattern>/pfc</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>DEFAULT</servlet-name>
+    <jsp-file>/view/default.html</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DEFAULT</servlet-name>
+    <url-pattern>/default</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>LUMat</servlet-name>
     <servlet-class>com.bpfc.LUMatServlet</servlet-class>
   </servlet>
