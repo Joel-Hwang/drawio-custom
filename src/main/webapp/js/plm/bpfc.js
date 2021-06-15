@@ -163,9 +163,9 @@ function postMessageBpfc(evt) {
     switch (msg.event) {
         case "getXml":
             bondType = msg.type;
-            if(bondType == 'ZX_BPFC_ASSEMBLY') gXml = tmplAssembly;
+            if(bondType.toLowerCase() == 'ZX_BPFC_Assembly'.toLowerCase()) gXml = tmplAssembly;
             else gXml = tmplStockfit;
-
+            document.querySelector('title').textContent = msg.title
             if(msg.mxgraph) gXml = msg.mxgraph;
             try{
                 popMat.data = JSON.parse(msg.bomData);
@@ -249,8 +249,9 @@ let editor = {
         let encryptedModel = xmlDoc.querySelector("diagram").textContent;
         let decryptedModel = editor.decode(encryptedModel);
         let lineLayout = gParser.getLineLayout(decryptedModel);
+        let partIds = gParser.getPartIds(decryptedModel);
         opener.postMessage(
-            { action: "saveImg", img, decryptedModel, lineLayout },
+            { action: "saveImg", img, decryptedModel, lineLayout, partIds },
             plmUrl
         );
     },
@@ -361,6 +362,15 @@ let gParser = {
 
         materials.sort( (a,b) => a.x - b.x);
         return materials;
+    },
+    getPartIds : (decryptedModel) => {
+        let xmlDoc = mxUtils.parseXml(decryptedModel);
+        let materials = gParser.getMaterials(xmlDoc);
+        let res = [];
+        for(let mtl of materials){
+            res.push(mtl._part_id);
+        }
+        return res;
     },
     updateMaterialWithPartType : (partTypes, materials) => {
         let i = 0;
