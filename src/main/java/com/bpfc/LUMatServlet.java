@@ -1,6 +1,7 @@
 package com.bpfc;
 
 
+import com.Global;
 import com.google.gson.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -122,8 +123,8 @@ public class LUMatServlet extends HttpServlet
 
     private String call2(String jsalt, String cookie) throws Exception{
         String cookie2 = "";
-        String id = "";
-        String pw = "";
+        String id = Global.nkConnId;
+        String pw = Global.nkConnPw;
         URL url = new URL("https://www.nikeconnect.com/irj/portal");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 

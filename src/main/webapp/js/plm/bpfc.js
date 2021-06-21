@@ -3,7 +3,13 @@ const plmUrl = window.location.protocol+'//'+window.location.hostname;
 const drawUrl = window.location.protocol+'//'+window.location.host+'/'
     + (window.location.pathname.split('/').length>2?window.location.pathname.split('/')[1]+'/':'');
 let iframe;
-let gXml = ''
+let gXml = `
+<mxGraphModel dx="873" dy="1125" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+  </root>
+</mxGraphModel>`;
 let bondType = '';
 let tmplAssembly = `
 <mxGraphModel dx="1092" dy="777" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="826" pageHeight="1169" background="#ffffff" math="0" shadow="0">
@@ -391,32 +397,26 @@ let gParser = {
             let dry = obj.getAttribute('dry');
             let chamber = obj.getAttribute('chamber');  // Dry Image (Hot Air + NIR) or Dry Image (NIR) or Dry Image (Hot Air)
             chamber = gParser.getChamber(chamber);
-            let children = Array.from(xmlDoc.querySelectorAll('mxCell'))
-                .filter((n) => n.getAttribute('parent') == obj.id );
-            let geo = children[0].querySelector('mxGeometry');
-            let _proc_name = children[0].getAttribute('value').split("\n")[0].trim();
+            let children = obj.querySelector('mxCell');
+            let geo = children.querySelector('mxGeometry');
+            let _proc_name = obj.getAttribute('label').split("\n")[0].trim();
 
-            let geo2 = obj.querySelector('mxCell mxGeometry');
             let width = Number(geo.getAttribute('width'));
             let height = Number(geo.getAttribute('height'));
-            let x = Number(geo2.getAttribute('x'));
+            let x = Number(geo.getAttribute('x'));
             let xEnd = x+width;
-            let y = Number(geo2.getAttribute('y'));
+            let y = Number(geo.getAttribute('y'));
             let yEnd = y+height;
 
-            let noUpdate = true;
-            if(children.length == 2) noUpdate = false;
+
 
             //prcss.push({dry,chamber,_proc_name,x,xEnd,y,yEnd, noUpdate});
             if(dry != 'no'){
-                prcss.push({dry:'no',chamber:'no',_proc_name,x,xEnd,y,yEnd, noUpdate});
-                prcss.push({dry:'yes',chamber,_proc_name:'Dry',x,xEnd,y,yEnd,noUpdate:true});
+                prcss.push({dry:'no',chamber:'no',_proc_name,x,xEnd,y,yEnd});
+                prcss.push({dry:'yes',chamber,_proc_name:'Dry',x,xEnd,y,yEnd});
             }else{
-                prcss.push({dry,chamber,_proc_name,x,xEnd,y,yEnd, noUpdate});
+                prcss.push({dry,chamber,_proc_name,x,xEnd,y,yEnd});
             }
-
-
-
         }
         prcss.sort( (a,b) => {
             if(a.y > b.y) return 1;
@@ -427,7 +427,7 @@ let gParser = {
     },
     updatePrcsWithMaterial : (materials, prcss) => {
         for(let prcs of prcss){
-            if(prcs.noUpdate){
+            if(prcs.dty === 'yes'){
                 prcs.partType = '';
                 prcs._mat_name = '';
                 prcs._part_id = '';
@@ -448,7 +448,6 @@ let gParser = {
             delete prcs.xEnd;
             delete prcs.y;
             delete prcs.yEnd;
-            delete prcs.noUpdate;
         }
     },
     getChamber : (chamber) => {
@@ -851,30 +850,25 @@ let popPrc = {
             mxObj.id = editor.getNewId(xmlDoc);
             mxObj.setAttribute("dry","no");
             mxObj.setAttribute("chamber","no");
-            let mxCellGroup = xmlDoc.createElement("mxCell");
-            mxCellGroup.setAttribute("style", "group");
-            mxCellGroup.setAttribute("vertex", "1");
-            mxCellGroup.setAttribute("parent", "1");
-            mxCellGroup.innerHTML = `<mxGeometry x="${(popPrc.loc.x += 150)}" y="${popPrc.loc.y}" width="20" height="20" as="geometry"/>`;
-            mxObj.appendChild(mxCellGroup);
+            mxObj.setAttribute("label",`${_proc_name} ${_chemical} \n${_tmpr==''?'':'('+_tmpr+')'}`);
             xmlDoc.querySelector("root").appendChild(mxObj);
 
             let mxCell = xmlDoc.createElement("mxCell");
             mxCell.id = editor.getNewId(xmlDoc);
-            mxCell.setAttribute('value',`${_proc_name} ${_chemical} \n(${_tmpr})`);
             mxCell.setAttribute("style", "rounded=0;whiteSpace=wrap;html=1;");
             mxCell.setAttribute("vertex", "1");
-            mxCell.setAttribute("parent", mxObj.id);
-            mxCell.innerHTML = `<mxGeometry width="140" height="60" as="geometry"/>`;
-            xmlDoc.querySelector("root").appendChild(mxCell);
+            mxCell.setAttribute("parent", "1");
+            mxCell.innerHTML = `<mxGeometry x="${(popPrc.loc.x)}" y="${popPrc.loc.y}" width="140" height="60" as="geometry"/>`;
+            mxObj.appendChild(mxCell);
+
 
             let mxCellBrush = xmlDoc.createElement("mxCell");
             mxCellBrush.id = editor.getNewId(xmlDoc);
             mxCellBrush.setAttribute("value", _brush);
             mxCellBrush.setAttribute("vertex", "1");
-            mxCellBrush.setAttribute("parent", mxObj.id);
-            mxCellBrush.innerHTML = `<mxGeometry width="20" height="20" as="geometry"/>`;
-
+            mxCellBrush.setAttribute("parent", "1");
+            mxCellBrush.innerHTML = `<mxGeometry x="${(popPrc.loc.x)}" y="${popPrc.loc.y}" width="20" height="20" as="geometry"/>`;
+            popPrc.loc.x += 150;
             switch (_brush) {
                 case "A":
                     mxCellBrush.setAttribute(
@@ -914,7 +908,7 @@ let popPrc = {
                 default:
                     break;
             }
-        }
+        };
         popPrc.loc.x = 80;
         popPrc.loc.y += 80;
         gXml = mxUtils.getXml(xmlDoc);
