@@ -315,6 +315,24 @@ let editor = {
         }
         return res;
     },
+    getPrcsPos : (xmlDoc) => {
+        let prcss = Array.from(xmlDoc.querySelectorAll('object'))
+            .filter((n) => n.hasAttribute('dry') );
+        let maxX = 0;
+        let maxY = 0;
+        for(let prcs of prcss){
+            let mxGeometry = prcs.querySelector('mxCell mxGeometry');
+            let x = Number(mxGeometry.getAttribute('x'));
+            let y = Number(mxGeometry.getAttribute('y'));
+
+            if( maxY < y ){
+                maxY = y;
+                maxX = 0;
+            }
+            maxX = Math.max(maxX,x);
+        }
+        return {maxX,maxY};
+    }
 
 };
 
@@ -427,7 +445,7 @@ let gParser = {
     },
     updatePrcsWithMaterial : (materials, prcss) => {
         for(let prcs of prcss){
-            if(prcs.dty === 'yes'){
+            if(prcs.dry === 'yes'){
                 prcs.partType = '';
                 prcs._mat_name = '';
                 prcs._part_id = '';
@@ -801,7 +819,7 @@ let popPrc = {
         ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
     ],
     loc: {
-        x: 80,
+        x: 230,
         y: 240,
     },
     load: (prc,chem) => {
@@ -836,81 +854,89 @@ let popPrc = {
     onClickOk: () => {
         // iframe load action을 다시 날려야 함
         let xmlDoc = mxUtils.parseXml(gXml);
+        let maxPos = editor.getPrcsPos(xmlDoc);
+        popPrc.loc.x = 80;
+        popPrc.loc.y = maxPos.maxY + 80;
+
         for (let elem of document.querySelectorAll(
             "#popPrcContents .card.select"
         )) {
-            let _proc_name = elem.querySelector('div[name="_proc_name"]')
-                .textContent;
-            let _chemical = elem.querySelector('div[name="_chemical"]')
-                .textContent;
-            let _brush = elem.querySelector('input[name="_brush"]').value;
-            let _tmpr = elem.querySelector('input[name="_tmpr"]').value;
+            try{
+                let _proc_name = elem.querySelector('div[name="_proc_name"]')
+                    .textContent;
+                let _chemical = elem.querySelector('div[name="_chemical"]')
+                    .textContent;
+                let _brush = elem.querySelector('input[name="_brush"]').value;
+                let _tmpr = elem.querySelector('input[name="_tmpr"]').value;
 
-            let mxObj = xmlDoc.createElement('object');
-            mxObj.id = editor.getNewId(xmlDoc);
-            mxObj.setAttribute("dry","no");
-            mxObj.setAttribute("chamber","no");
-            mxObj.setAttribute("label",`${_proc_name} ${_chemical} \n${_tmpr==''?'':'('+_tmpr+')'}`);
-            xmlDoc.querySelector("root").appendChild(mxObj);
+                let mxObj = xmlDoc.createElement('object');
+                mxObj.id = editor.getNewId(xmlDoc);
+                mxObj.setAttribute("dry","no");
+                mxObj.setAttribute("chamber","no");
+                mxObj.setAttribute("label",`${_proc_name} ${_chemical} \n${_tmpr==''?'':'('+_tmpr+')'}`);
+                xmlDoc.querySelector("root").appendChild(mxObj);
 
-            let mxCell = xmlDoc.createElement("mxCell");
-            mxCell.id = editor.getNewId(xmlDoc);
-            mxCell.setAttribute("style", "rounded=0;whiteSpace=wrap;html=1;");
-            mxCell.setAttribute("vertex", "1");
-            mxCell.setAttribute("parent", "1");
-            mxCell.innerHTML = `<mxGeometry x="${(popPrc.loc.x)}" y="${popPrc.loc.y}" width="140" height="60" as="geometry"/>`;
-            mxObj.appendChild(mxCell);
+                let mxCell = xmlDoc.createElement("mxCell");
+                mxCell.id = editor.getNewId(xmlDoc);
+                mxCell.setAttribute("style", "rounded=0;whiteSpace=wrap;html=1;");
+                mxCell.setAttribute("vertex", "1");
+                mxCell.setAttribute("parent", "1");
+                mxCell.innerHTML = `<mxGeometry x="${(popPrc.loc.x)}" y="${popPrc.loc.y}" width="140" height="60" as="geometry"/>`;
+                mxObj.appendChild(mxCell);
 
 
-            let mxCellBrush = xmlDoc.createElement("mxCell");
-            mxCellBrush.id = editor.getNewId(xmlDoc);
-            mxCellBrush.setAttribute("value", _brush);
-            mxCellBrush.setAttribute("vertex", "1");
-            mxCellBrush.setAttribute("parent", "1");
-            mxCellBrush.innerHTML = `<mxGeometry x="${(popPrc.loc.x)}" y="${popPrc.loc.y}" width="20" height="20" as="geometry"/>`;
-            popPrc.loc.x += 150;
-            switch (_brush) {
-                case "A":
-                    mxCellBrush.setAttribute(
-                        "style",
-                        "rounded=0;whiteSpace=wrap;html=1;strokeColor=#432D57;fillColor=#E41A1C;fontColor=#ffffff;"
-                    );
-                    xmlDoc.querySelector("root").appendChild(mxCellBrush);
-                    break;
-                case "B":
-                    mxCellBrush.setAttribute(
-                        "style",
-                        "rounded=0;whiteSpace=wrap;html=1;strokeColor=#006EAF;fillColor=#A65628;fontColor=#ffffff;"
-                    );
-                    xmlDoc.querySelector("root").appendChild(mxCellBrush);
-                    break;
-                case "C":
-                    mxCellBrush.setAttribute(
-                        "style",
-                        "rounded=0;whiteSpace=wrap;html=1;strokeColor=#999900;fillColor=#A1A120;fontColor=#ffffff;"
-                    );
-                    xmlDoc.querySelector("root").appendChild(mxCellBrush);
-                    break;
-                case "D":
-                    mxCellBrush.setAttribute(
-                        "style",
-                        "rounded=0;whiteSpace=wrap;html=1;strokeColor=#999900;fillColor=#FF7F00;fontColor=#ffffff;"
-                    );
-                    xmlDoc.querySelector("root").appendChild(mxCellBrush);
-                    break;
-                case "E":
-                    mxCellBrush.setAttribute(
-                        "style",
-                        "rounded=0;whiteSpace=wrap;html=1;strokeColor=#999900;fillColor=#0BB890;fontColor=#ffffff;"
-                    );
-                    xmlDoc.querySelector("root").appendChild(mxCellBrush);
-                    break;
-                default:
-                    break;
+                let mxCellBrush = xmlDoc.createElement("mxCell");
+                mxCellBrush.id = editor.getNewId(xmlDoc);
+                mxCellBrush.setAttribute("value", _brush);
+                mxCellBrush.setAttribute("vertex", "1");
+                mxCellBrush.setAttribute("parent", "1");
+                mxCellBrush.innerHTML = `<mxGeometry x="${(popPrc.loc.x)}" y="${popPrc.loc.y}" width="20" height="20" as="geometry"/>`;
+                popPrc.loc.x += 150;
+                switch (_brush) {
+                    case "A":
+                        mxCellBrush.setAttribute(
+                            "style",
+                            "rounded=0;whiteSpace=wrap;html=1;strokeColor=#432D57;fillColor=#E41A1C;fontColor=#ffffff;"
+                        );
+                        xmlDoc.querySelector("root").appendChild(mxCellBrush);
+                        break;
+                    case "B":
+                        mxCellBrush.setAttribute(
+                            "style",
+                            "rounded=0;whiteSpace=wrap;html=1;strokeColor=#006EAF;fillColor=#A65628;fontColor=#ffffff;"
+                        );
+                        xmlDoc.querySelector("root").appendChild(mxCellBrush);
+                        break;
+                    case "C":
+                        mxCellBrush.setAttribute(
+                            "style",
+                            "rounded=0;whiteSpace=wrap;html=1;strokeColor=#999900;fillColor=#A1A120;fontColor=#ffffff;"
+                        );
+                        xmlDoc.querySelector("root").appendChild(mxCellBrush);
+                        break;
+                    case "D":
+                        mxCellBrush.setAttribute(
+                            "style",
+                            "rounded=0;whiteSpace=wrap;html=1;strokeColor=#999900;fillColor=#FF7F00;fontColor=#ffffff;"
+                        );
+                        xmlDoc.querySelector("root").appendChild(mxCellBrush);
+                        break;
+                    case "E":
+                        mxCellBrush.setAttribute(
+                            "style",
+                            "rounded=0;whiteSpace=wrap;html=1;strokeColor=#999900;fillColor=#0BB890;fontColor=#ffffff;"
+                        );
+                        xmlDoc.querySelector("root").appendChild(mxCellBrush);
+                        break;
+                    default:
+                        break;
+                }
+            }catch(e){
+                alert(elem.querySelector('div[name="_proc_name"]') + 'data error');
             }
+
         };
-        popPrc.loc.x = 80;
-        popPrc.loc.y += 80;
+
         gXml = mxUtils.getXml(xmlDoc);
         iframe.contentWindow.postMessage(
             JSON.stringify({ action: "load", xml: gXml }),
