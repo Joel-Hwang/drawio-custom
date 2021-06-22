@@ -248,18 +248,24 @@ let editor = {
         );
     },
     exportXml: (msg) => {
-        let img = msg.data;
-        window.removeEventListener("message", postMessage);
-        document.body.removeChild(iframe);
-        let xmlDoc = mxUtils.parseXml(msg.xml);
-        let encryptedModel = xmlDoc.querySelector("diagram").textContent;
-        let decryptedModel = editor.decode(encryptedModel);
-        let lineLayout = gParser.getLineLayout(decryptedModel);
-        let partIds = gParser.getPartIds(decryptedModel);
-        opener.postMessage(
-            { action: "saveImg", img, decryptedModel, lineLayout, partIds },
-            plmUrl
-        );
+        try{
+            let img = msg.data;
+            window.removeEventListener("message", postMessage);
+            document.body.removeChild(iframe);
+            let xmlDoc = mxUtils.parseXml(msg.xml);
+            let encryptedModel = xmlDoc.querySelector("diagram").textContent;
+            let decryptedModel = editor.decode(encryptedModel);
+            let lineLayout = gParser.getLineLayout(decryptedModel);
+            let partIds = gParser.getPartIds(decryptedModel);
+            opener.postMessage(
+                { action: "saveImg", img, decryptedModel, lineLayout, partIds },
+                plmUrl
+            );
+        }catch(e){
+            console.log(e);
+            alert('invalid data format.');
+        }
+
     },
     encode: (data) => {
         data = encodeURIComponent(data);
@@ -415,9 +421,16 @@ let gParser = {
             let dry = obj.getAttribute('dry');
             let chamber = obj.getAttribute('chamber');  // Dry Image (Hot Air + NIR) or Dry Image (NIR) or Dry Image (Hot Air)
             chamber = gParser.getChamber(chamber);
-            let children = obj.querySelector('mxCell');
-            let geo = children.querySelector('mxGeometry');
-            let _proc_name = obj.getAttribute('label').split("\n")[0].trim();
+            let child = obj.querySelector('mxCell');
+            let geo = child.querySelector('mxGeometry');
+            let _proc_name = '';
+            if(obj.getAttribute('label')){ //Process 그룹화 안되어 있을 때 로직
+                _proc_name = obj.getAttribute('label').split("\n")[0].trim();
+            }else{ //Process 그룹화 되어 있을때 로직
+                let children = xmlDoc.querySelectorAll('mxCell[parent="'+obj.id+'"]');
+                if(children.length>0 && children[0].getAttribute('value'))
+                    _proc_name = children[0].getAttribute('value').split("\n")[0].trim();
+            }
 
             let width = Number(geo.getAttribute('width'));
             let height = Number(geo.getAttribute('height'));
