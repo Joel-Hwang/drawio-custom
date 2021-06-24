@@ -257,6 +257,10 @@ let editor = {
             let decryptedModel = editor.decode(encryptedModel);
             let lineLayout = gParser.getLineLayout(decryptedModel);
             let partIds = gParser.getPartIds(decryptedModel);
+            localStorage.img = img;
+            localStorage.decryptedModel = decryptedModel;
+            localStorage.lineLayout = lineLayout;
+            localStorage.partIds = partIds;
             opener.postMessage(
                 { action: "saveImg", img, decryptedModel, lineLayout, partIds },
                 plmUrl
@@ -325,7 +329,7 @@ let editor = {
         let prcss = Array.from(xmlDoc.querySelectorAll('object'))
             .filter((n) => n.hasAttribute('dry') );
         let maxX = 0;
-        let maxY = 0;
+        let maxY = 160;
         for(let prcs of prcss){
             let mxGeometry = prcs.querySelector('mxCell mxGeometry');
             let x = Number(mxGeometry.getAttribute('x'));
@@ -868,7 +872,7 @@ let popPrc = {
         // iframe load action을 다시 날려야 함
         let xmlDoc = mxUtils.parseXml(gXml);
         let maxPos = editor.getPrcsPos(xmlDoc);
-        popPrc.loc.x = 80;
+        popPrc.loc.x = 230;
         popPrc.loc.y = maxPos.maxY + 80;
 
         for (let elem of document.querySelectorAll(
