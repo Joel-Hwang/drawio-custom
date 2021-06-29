@@ -218,6 +218,16 @@
             display: inline;
             float: right;
         }
+
+        table {
+            width:100%;
+            border: 1px solid #444444;
+            border-collapse: collapse;
+        }
+        th,td{
+            border: 1px solid #444444;
+            padding: 10px;
+        }
     </style>
     <script type="text/javascript" src="js/diagram-editor.js"></script>
     <script type="text/javascript" src="js/mxClient.js"></script>
@@ -269,6 +279,7 @@
                 </div>
 
             </div>
+
             <div id="popMatContents" class="modal-grid"></div>
             <div style="text-align: right">
                 <button
@@ -307,6 +318,69 @@
                     <span>Chemical</span>
                     <input type="text" name="srchChem" onkeyup="popPrc.onSearch()">
                 </div>
+            </div>
+            <div id="tbMatContents" >
+                <table>
+                    <tr>
+                    <th>Chemical vendor</th>
+                    <th>Process Name</th>
+                    <th>Chemical/Condition</th>
+                    <th>Type</th>
+                    <th>Hardener</th>
+                    <th>Hardener content</th>
+                    </tr>
+                    <tr>
+                        <td>Han young</td>
+                        <td>Cleaner</td>
+                        <td>2388M</td>
+                        <td>SB</td>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                    </tr>
+                    <tr>
+                        <td>Sam-Bu</td>
+                        <td>Cleaner</td>
+                        <td>Bio E10-T</td>
+                        <td>WB</td>
+                        <td>ET-3</td>
+                        <td>5% ADDITION</td>
+                    </tr>
+                    <tr>
+                        <td>Henkel</td>
+                        <td>Primer</td>
+                        <td>BONDACE 007</td>
+                        <td>SB</td>
+                        <td>Powder</td>
+                        <td>2% ADDITION</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Dry</td>
+                        <td>45~50℃ x 2'15"</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Dry</td>
+                        <td>48~53℃ x 2'15"</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Dry</td>
+                        <td>50~55℃ x 2'15"</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                </table>
+
+
             </div>
             <div id="popPrcContents" class="modal-grid"></div>
             <div style="text-align: right">
