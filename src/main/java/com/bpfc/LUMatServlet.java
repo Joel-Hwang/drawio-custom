@@ -42,9 +42,8 @@ public class LUMatServlet extends HttpServlet
 
         JsonParser parser = new JsonParser();
         JsonElement element = parser.parse(bf);
-
         String[] keyword = {"","","",""};
-        for(int i = 0; i<element.getAsJsonArray().size(); i++){
+        for(int i = 0; i<element.getAsJsonArray().size()&&i<4; i++){
             String key = element.getAsJsonArray().get(i).getAsString();
             if(key.isEmpty() || "NULL".equals(key) || "N/A".equals(key))
                 continue;

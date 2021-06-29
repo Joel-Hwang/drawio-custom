@@ -627,6 +627,7 @@ let popMat = {
         spinner.show();
         let xmlDoc = mxUtils.parseXml(gXml);
         let luMatParam = [];
+        let matNames = [];
         for (let mat of document.querySelectorAll(
             "#popMatContents .card.select"
         )) {
@@ -637,7 +638,7 @@ let popMat = {
                 .textContent;
             let _part_id = mat.querySelector('div[name="_part_type"]').id;
             luMatParam.push(_mcs_number);
-
+            matNames.push({_mcs_number,_mat_name});
             let mxObj = xmlDoc.createElement('object');
             mxObj.id = editor.getNewId(xmlDoc);
             mxObj.setAttribute("type","material");
@@ -658,7 +659,7 @@ let popMat = {
         }
 
         if(bondType == 'ZX_BPFC_Assembly')
-            await popMat.addLuMatMxCell(luMatParam,xmlDoc);
+            await popMat.addLuMatMxCell(luMatParam,matNames,xmlDoc);
 
         popMat.loc.x += 50;
         popMat.loc.y += 50;
@@ -676,8 +677,9 @@ let popMat = {
         document.querySelector("#popMatContents").innerHTML = "";
         document.querySelector("#popMat").style.display = "none";
     },
-    addLuMatMxCell : async (luMatParam,xmlDoc)=>{
-        let luMat = await popMat.retrieveLuMat(luMatParam);
+    addLuMatMxCell : async (luMatParam,matNames,xmlDoc)=>{
+        let luMat = await popMat.retrieveLuMat(luMatParam, matNames);
+        debugger;
         if(luMat !== ''){
             let mxCellLuMat = xmlDoc.createElement("mxCell");
             mxCellLuMat.id = editor.getNewId(xmlDoc);
@@ -689,7 +691,7 @@ let popMat = {
             xmlDoc.querySelector("root").appendChild(mxCellLuMat);
         }
     },
-    retrieveLuMat: async (param) => {
+    retrieveLuMat: async (param, matNames) => {
         let response = await fetch(drawUrl+'lumat',{
             method:'POST',
             headers: {
@@ -701,8 +703,17 @@ let popMat = {
             let res = '';
 
             let json = await response.json();
-            for(let key of Object.keys(json)){
+            /*for(let key of Object.keys(json)){
                 res = res + key + ' : ' + json[key]+'\n\n';
+            }
+            return res;*/
+            for(let key of Object.keys(json)){
+                for(let i = 0; i<matNames.length; i++){
+                    if(key == matNames[i]._mcs_number){
+                        res = res + matNames[i]._mat_name + '\n -' + json[key]+'\n\n';
+                        continue;
+                    }
+                }
             }
             return res;
         } else {
