@@ -176,7 +176,8 @@
             border-radius: 5px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             transition: all 0.2s;
-            font-size: 10pt;
+            color: #6c757d;
+            font-size: 8pt;
             cursor: pointer;
             min-width: 150px;
         }
@@ -194,40 +195,45 @@
         }
 
         .card div:nth-child(2) {
-            font-size: 8pt;
             color: #6c757d;
             display: inline;
         }
 
         .card div:nth-child(3) {
-            font-size: 8pt;
             color: #6c757d;
             display: inline;
             float: right;
         }
 
         .card.select div:nth-child(2) {
-            font-size: 8pt;
             color: #fff;
             display: inline;
         }
 
         .card.select div:nth-child(3) {
-            font-size: 8pt;
             color: #fff;
             display: inline;
             float: right;
         }
 
-        table {
-            width:100%;
-            border: 1px solid #444444;
-            border-collapse: collapse;
+        .card .select2 {
+            position: relative;
+            top: -18px;
+            left: 55px;
+            width: 224px;
+            z-index: 0;
+            border: none;
+            height: 20px;
         }
-        th,td{
-            border: 1px solid #444444;
-            padding: 10px;
+
+        .card .input2 {
+            width: 200px;
+            border: none;
+            border-bottom: 1px solid #ababab;
+            position: relative;
+            z-index: 1;
         }
+
     </style>
     <script type="text/javascript" src="js/diagram-editor.js"></script>
     <script type="text/javascript" src="js/mxClient.js"></script>
@@ -311,7 +317,11 @@
         >
             <div class="search-area">
                 <div style="display: inline-block; margin-right: 40px;">
-                    <span>Process</span>
+                    <span>Vendor</span>
+                    <input type="text" name="srchVdr" onkeyup="popPrc.onSearch()">
+                </div>
+                <div style="display: inline-block; margin-right: 40px;">
+                    <span>Process Name</span>
                     <input type="text" name="srchPrc" onkeyup="popPrc.onSearch()">
                 </div>
                 <div style="display: inline-block;">
@@ -319,69 +329,7 @@
                     <input type="text" name="srchChem" onkeyup="popPrc.onSearch()">
                 </div>
             </div>
-            <div id="tbMatContents" >
-                <table>
-                    <tr>
-                    <th>Chemical vendor</th>
-                    <th>Process Name</th>
-                    <th>Chemical/Condition</th>
-                    <th>Type</th>
-                    <th>Hardener</th>
-                    <th>Hardener content</th>
-                    </tr>
-                    <tr>
-                        <td>Han young</td>
-                        <td>Cleaner</td>
-                        <td>2388M</td>
-                        <td>SB</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                    </tr>
-                    <tr>
-                        <td>Sam-Bu</td>
-                        <td>Cleaner</td>
-                        <td>Bio E10-T</td>
-                        <td>WB</td>
-                        <td>ET-3</td>
-                        <td>5% ADDITION</td>
-                    </tr>
-                    <tr>
-                        <td>Henkel</td>
-                        <td>Primer</td>
-                        <td>BONDACE 007</td>
-                        <td>SB</td>
-                        <td>Powder</td>
-                        <td>2% ADDITION</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Dry</td>
-                        <td>45~50℃ x 2'15"</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Dry</td>
-                        <td>48~53℃ x 2'15"</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Dry</td>
-                        <td>50~55℃ x 2'15"</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
 
-                </table>
-
-
-            </div>
             <div id="popPrcContents" class="modal-grid"></div>
             <div style="text-align: right">
                 <button
@@ -417,10 +365,10 @@
 
 <template id="prcCard">
     <div class="card" onclick="popPrc.onClickItem(this)">
-        <div id="" name="_proc_name" style="font-size: 11pt; margin-bottom: 10px">
+        <div name="_proc_name" style="font-size: 11pt; margin-bottom: 10px">
             CMP-SKIN ON (MWCMP001)
         </div>
-        <div name="_chemical">MIDSOLE</div>
+
         <div>
             <span>Brush : </span>
             <input
@@ -435,13 +383,18 @@
                     value=""
             />
         </div>
-        <div style="margin-top: 10px">
-            <input
-                    type="text"
-                    name="_tmpr"
-                    style="width: 140px; border: none; border-bottom: 1px solid #ababab"
-                    value=""
-            />
+        <div name="_vendor">MIDSOLE</div>
+        <div style="margin-top: 15px" name="_condition">
+            <div name="_condition_title" style="display: inline-block; width: 55px;">Condition : </div>
+            <input class="input2" type="text" name="_condition" value=""/>
+            <select name="_condition" class="select2" onchange="this.previousElementSibling.value = this.value;">
+            </select>
+        </div>
+        <div style="margin-top: 15px" name="_hrd">
+            <div name="_hrd_title" style="display: inline-block; width: 55px;">Hardener : </div>
+            <input class="input2" type="text" name="_hrd" value=""/>
+            <select name="_hrd" class="select2" onchange="this.previousElementSibling.value = this.value;">
+            </select>
         </div>
     </div>
 </template>
