@@ -196,6 +196,7 @@ function postMessageBpfc(evt) {
             editor.autosave(gXml);
             break;
         case "save":
+            localStorage.error = "Save button clicked";
             editor.save(msg);
             break;
         case "exit":
@@ -246,8 +247,11 @@ let editor = {
             }),
             "*"
         );
+        localStorage.error += "\npostMessage export";
     },
     exportXml: (msg) => {
+        localStorage.error += "\npostMessage export";
+        localStorage.msg = msg;
         try{
             let img = msg.data;
             window.removeEventListener("message", postMessage);
@@ -262,12 +266,15 @@ let editor = {
             localStorage.lineLayout = lineLayout;
             localStorage.partIds = partIds;
             editor.setClipboard(encodeURIComponent(decryptedModel));
+            localStorage.error += "\nbefore postMessage saveImg";
             opener.postMessage(
                 { action: "saveImg", img, decryptedModel, lineLayout, partIds },
                 plmUrl
             );
+            localStorage.error += "\nafter postMessage saveImg";
         }catch(e){
             console.log(e);
+            localStorage.error = e;
             alert('invalid data format.');
         }
 
@@ -916,7 +923,7 @@ let popPrc = {
                 mxObj.id = editor.getNewId(xmlDoc);
                 mxObj.setAttribute("dry","no");
                 mxObj.setAttribute("chamber","no");
-                mxObj.setAttribute("label",`${_proc_name} ${_chemical} \n${_tmpr==''?'':'('+_tmpr+')'}`);
+                mxObj.setAttribute("label",`${_proc_name} ${_chemical}${_tmpr==''?'':'\n('+_tmpr+')'}`);
                 xmlDoc.querySelector("root").appendChild(mxObj);
 
                 let mxCell = xmlDoc.createElement("mxCell");
