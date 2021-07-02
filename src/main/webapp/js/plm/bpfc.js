@@ -261,6 +261,7 @@ let editor = {
             localStorage.decryptedModel = decryptedModel;
             localStorage.lineLayout = lineLayout;
             localStorage.partIds = partIds;
+            editor.setClipboard(encodeURIComponent(decryptedModel));
             opener.postMessage(
                 { action: "saveImg", img, decryptedModel, lineLayout, partIds },
                 plmUrl
@@ -342,6 +343,16 @@ let editor = {
             maxX = Math.max(maxX,x);
         }
         return {maxX,maxY};
+    },
+    setClipboard : (data) => {
+        let tempElem = document.createElement('textarea');
+        tempElem.value = data;
+        document.body.appendChild(tempElem);
+
+        tempElem.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempElem);
+
     }
 
 };
