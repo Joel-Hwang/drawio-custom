@@ -233,6 +233,22 @@
             z-index: 1;
         }
 
+        .hrd {
+            z-index: 1;
+            position: absolute;
+            bottom: 60px;
+            left: 260px;
+            color: #555555;
+            font-size: 8pt;
+        }
+        .hrd table {
+            border: 1px solid #444444;
+            border-collapse: collapse;
+        }
+        .hrd th, .hrd td {
+            border: 1px solid #444444;
+        }
+
     </style>
     <script type="text/javascript" src="js/diagram-editor.js"></script>
     <script type="text/javascript" src="js/mxClient.js"></script>
@@ -259,6 +275,17 @@
             onclick="custom.onClickPrc()"
     >Process</a
     >
+</div>
+<div class = "hrd">
+    <table>
+        <thead>
+            <tr>
+                <th>Hardener</th>
+            </tr>
+        </thead>
+        <tbody id="hrd"></tbody>
+    </table>
+
 </div>
 
 <div id="popMat" class="modal">
