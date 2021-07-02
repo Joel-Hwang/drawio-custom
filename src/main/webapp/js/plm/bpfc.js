@@ -261,6 +261,7 @@ let editor = {
             localStorage.decryptedModel = decryptedModel;
             localStorage.lineLayout = lineLayout;
             localStorage.partIds = partIds;
+            editor.setClipboard(encodeURIComponent(decryptedModel));
             opener.postMessage(
                 { action: "saveImg", img, decryptedModel, lineLayout, partIds },
                 plmUrl
@@ -342,6 +343,15 @@ let editor = {
             maxX = Math.max(maxX,x);
         }
         return {maxX,maxY};
+    },
+    setClipboard : (data) => {
+        let tempElem = document.createElement('textarea');
+        tempElem.value = data;
+        document.body.appendChild(tempElem);
+
+        tempElem.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempElem);
     }
 
 };
@@ -435,6 +445,11 @@ let gParser = {
                 if(children.length>0 && children[0].getAttribute('value'))
                     _proc_name = children[0].getAttribute('value').split("\n")[0].trim();
             }
+
+            let tempSpan = document.createElement('span');
+            tempSpan.innerHTML = _proc_name;
+            _proc_name = tempSpan.textContent;
+            delete tempSpan;
 
             let width = Number(geo.getAttribute('width'));
             let height = Number(geo.getAttribute('height'));
