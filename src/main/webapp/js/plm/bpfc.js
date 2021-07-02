@@ -261,7 +261,6 @@ let editor = {
             localStorage.decryptedModel = decryptedModel;
             localStorage.lineLayout = lineLayout;
             localStorage.partIds = partIds;
-            editor.setClipboard(encodeURIComponent(decryptedModel));
             opener.postMessage(
                 { action: "saveImg", img, decryptedModel, lineLayout, partIds },
                 plmUrl
@@ -343,16 +342,6 @@ let editor = {
             maxX = Math.max(maxX,x);
         }
         return {maxX,maxY};
-    },
-    setClipboard : (data) => {
-        let tempElem = document.createElement('textarea');
-        tempElem.value = data;
-        document.body.appendChild(tempElem);
-
-        tempElem.select();
-        document.execCommand("copy");
-        document.body.removeChild(tempElem);
-
     }
 
 };
@@ -741,84 +730,144 @@ let popMat = {
 };
 
 let popPrc = {
-
-    data:[{"_sheet":"ZX_BPFC_PreStockfit","_vendor":"","_proc_name":"Water washing","_chemical":"","_drawio_proc_name":"Water washing","_hrd":[],"_condition":["Min 45~50℃ x 10'↑"]},{"_sheet":"ZX_BPFC_PreStockfit","_vendor":"","_proc_name":"Pre-Heating","_chemical":"","_drawio_proc_name":"Pre-Heating","_hrd":[],"_condition":["Min 45~50℃ x 1'30\"↑"]},{"_sheet":"ZX_BPFC_PreStockfit","_vendor":"Henkel","_proc_name":"UV Primer P-7-2","_chemical":"","_drawio_proc_name":"UV Primer P-7-2","_hrd":[],"_condition":["45~50℃ x Min 1'30\""]},{"_sheet":"ZX_BPFC_PreStockfit","_vendor":"Nan-Pao","_proc_name":"UV Primer UV-8N","_chemical":"","_drawio_proc_name":"UV Primer UV-8N","_hrd":[],"_condition":["45~50℃ x Min 1'30\""]},{"_sheet":"ZX_BPFC_PreStockfit","_vendor":"","_proc_name":"UV Lighting ","_chemical":"","_drawio_proc_name":"UV Lighting ","_hrd":[],"_condition":["Light color MIN 0.56 J/㎠↑or \r\nDark color Min 0.52 J/㎠↑"]},{"_sheet":"ZX_BPFC_PreStockfit","_vendor":"","_proc_name":"Packing","_chemical":"","_drawio_proc_name":"Packing","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_PreStockfit","_vendor":"","_proc_name":"Bio-110M washing ","_chemical":"","_drawio_proc_name":"Bio-110M washing ","_hrd":[],"_condition":["(Bio-110M : Water=1:20, PH:10↑). 70~80℃x 45\" ↑"]},{"_sheet":"ZX_BPFC_PreStockfit","_vendor":"","_proc_name":"1st water washing","_chemical":"","_drawio_proc_name":"1st water washing","_hrd":[],"_condition":["60~65℃x 35\" ↑"]},{"_sheet":"ZX_BPFC_PreStockfit","_vendor":"","_proc_name":"2nd water washing","_chemical":"","_drawio_proc_name":"2nd water washing","_hrd":[],"_condition":["(Oxalic acid, pH: 2~5) 70~75℃x 35\" ↑"]},{"_sheet":"ZX_BPFC_PreStockfit","_vendor":"","_proc_name":"Remove moisture with air","_chemical":"","_drawio_proc_name":"Remove moisture with air","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_PreStockfit","_vendor":"","_proc_name":"Dry C/V","_chemical":"","_drawio_proc_name":"Dry C/V","_hrd":[],"_condition":[" 80℃x 2'30\"↑"]},{"_sheet":"ZX_BPFC_PreStockfit","_vendor":"","_proc_name":"2.5D Heat Press","_chemical":"","_drawio_proc_name":"2.5D Heat Press","_hrd":[],"_condition":["120±10℃ x 1.8㎏/㎠  x 3\"↑"]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Han young","_proc_name":"Cleaner","_chemical":"2388M","_drawio_proc_name":"Cleaning 2388M","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nap-Pao","_proc_name":"Cleaner","_chemical":"256","_drawio_proc_name":"Cleaning 256","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Sam-Bu","_proc_name":"Cleaner","_chemical":"Bio E10-T","_drawio_proc_name":"♣ Cleaning E10-T","_hrd":["♣ ET-3 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Sam-Bu","_proc_name":"Cleaner","_chemical":"Bio S5","_drawio_proc_name":"Cleaning 5S","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cleaner","_chemical":"BONDACE  233BF","_drawio_proc_name":"Cleaning 233BF","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cleaner","_chemical":"BONDACE  233BFU","_drawio_proc_name":"Cleaning 233BFU","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cleaner","_chemical":"BONDACE  233M","_drawio_proc_name":"Cleaning 233M","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cleaner","_chemical":"BONDACE  233SM","_drawio_proc_name":"Cleaning 233SM","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cleaner","_chemical":"BONDACE  PC-3","_drawio_proc_name":"Cleaning PC-3","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nap-Pao","_proc_name":"Cleaner","_chemical":"No. 29","_drawio_proc_name":"Cleaning No. 29","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nap-Pao","_proc_name":"Cleaner","_chemical":"No. 29(CN)","_drawio_proc_name":"Cleaning No. 29(CN)","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Primer","_chemical":"BONDACE 005S","_drawio_proc_name":"Primer 005S","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Primer","_chemical":"BONDACE 007","_drawio_proc_name":"☆ Primer 007","_hrd":["☆ Powder : 2% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Primer","_chemical":"BONDACE 008-2","_drawio_proc_name":"Primer 008-2","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Primer","_chemical":"BONDACE 171-2","_drawio_proc_name":"※ Primer 171-2","_hrd":["※ DRFE : 5% ADDITION","※ RFE : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Primer","_chemical":"BONDACE 207","_drawio_proc_name":"☆ Primer 007","_hrd":["☆ Powder : 2% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Primer","_chemical":"BONDACE 218-2","_drawio_proc_name":"Primer 218-2","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Primer","_chemical":"BONDACE 224-2","_drawio_proc_name":"※ Primer 224-2","_hrd":["※ DRFE : 5% ADDITION","※ RFE : 5% ADDITION","※ ARF-1000 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Primer","_chemical":"BONDACE 232HF-2","_drawio_proc_name":"※ Primer 232HF-2","_hrd":["※ DRFE : 5% ADDITION","※ RFE : 5% ADDITION","※ ARF-1000 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Primer","_chemical":"BONDACE 234F-2","_drawio_proc_name":"※ Primer 234F-2","_hrd":["※ DRFE : 5% ADDITION","※ RFE : 5% ADDITION","※ ARF-1000 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Primer","_chemical":"AQUACE PR-651","_drawio_proc_name":"★ Primer PR-651","_hrd":["★ ARF-45 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Primer","_chemical":"AQUACE PR-505","_drawio_proc_name":"☆ Primer PR-505","_hrd":["☆ Powder : 2% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Primer","_chemical":"AQUACE PR-505 V2","_drawio_proc_name":"☆ Primer PR-505 V2","_hrd":["☆ Powder : 2% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Primer","_chemical":"AQUACE SW 7001","_drawio_proc_name":"Primer SW 7001","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Primer","_chemical":"AQUACE SW-3001","_drawio_proc_name":"Primer SW 3001","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Primer","_chemical":"AQUACE W-102","_drawio_proc_name":"★ Primer W-102","_hrd":["★ ARF-40 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Primer","_chemical":"AQUACE W-104","_drawio_proc_name":"★ Primer W-104","_hrd":["★ ARF-40 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Primer","_chemical":"AQUACE W-105","_drawio_proc_name":"★ Primer W-105","_hrd":["★ ARF-40 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cement","_chemical":"BONDACE 5100U-2","_drawio_proc_name":"※ Cement 5100U-2","_hrd":["※ DRFE : 5% ADDITION","※ RFE : 5% ADDITION","※ ARF-1000 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cement","_chemical":"BONDACE 5100UL-2","_drawio_proc_name":"※ Cement 5100UL-2","_hrd":["※ DRFE : 5% ADDITION","※ RFE : 5% ADDITION","※ ARF-1000 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cement","_chemical":"BONDACE 5100H-2","_drawio_proc_name":"※ Cement 5100H-2","_hrd":["※ DRFE : 5% ADDITION","※ RFE : 5% ADDITION","※ ARF-1000 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cement","_chemical":"BONDACE 5100UL-2 V2","_drawio_proc_name":"※ Cement 5100UL-2 V2","_hrd":["※ DRFE : 5% ADDITION","※ RFE : 5% ADDITION","※ ARF-1000 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cement","_chemical":"BONDACE 5100UL-2 V2L","_drawio_proc_name":"※ Cement 5100UL-2 V2L","_hrd":["※ DRFE : 5% ADDITION","※ RFE : 5% ADDITION","※ ARF-1000 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cement","_chemical":"BONDACE 6100U-2","_drawio_proc_name":"※ Cement 6100U-2","_hrd":["※ DRFE : 5% ADDITION","※ RFE : 5% ADDITION","※ ARF-1000 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cement","_chemical":"BONDACE 6100UL-2","_drawio_proc_name":"※ Cement 6100UL-2","_hrd":["※ DRFE : 5% ADDITION","※ RFE : 5% ADDITION","※ ARF-1000 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cement","_chemical":"C 325","_drawio_proc_name":"Cement C 325","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cement","_chemical":"C 325H","_drawio_proc_name":"Cement C 325H","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cement","_chemical":"C 326","_drawio_proc_name":"Cement C 326","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cement","_chemical":"C 310","_drawio_proc_name":"Cement C 310","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cement","_chemical":"AQUACE SW-07","_drawio_proc_name":"Cement SW-07","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cement","_chemical":"AQUACE SW-30","_drawio_proc_name":"Cement SW-30","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cement","_chemical":"W-01","_drawio_proc_name":"★ Cement W-01","_hrd":["★ ARF-40 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cement","_chemical":"W-50","_drawio_proc_name":"★ Cement W-50","_hrd":["★ ARF-40 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Han young","_proc_name":"Cleaner","_chemical":"2388M","_drawio_proc_name":"Cleaning 2388M","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nap-Pao","_proc_name":"Cleaner","_chemical":"256","_drawio_proc_name":"Cleaning 256","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Sam-Bu","_proc_name":"Cleaner","_chemical":"Bio E10-T","_drawio_proc_name":"♣ Cleaning E10-T","_hrd":["♣ ET-3 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Sam-Bu","_proc_name":"Cleaner","_chemical":"Bio S5","_drawio_proc_name":"Cleaning 5S","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cleaner","_chemical":"BONDACE  233BF","_drawio_proc_name":"Cleaning 233BF","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cleaner","_chemical":"BONDACE  233BFU","_drawio_proc_name":"Cleaning 233BFU","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cleaner","_chemical":"BONDACE  233M","_drawio_proc_name":"Cleaning 233M","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cleaner","_chemical":"BONDACE  233SM","_drawio_proc_name":"Cleaning 233SM","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cleaner","_chemical":"BONDACE  PC-3","_drawio_proc_name":"Cleaning PC-3","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nap-Pao","_proc_name":"Cleaner","_chemical":"No. 29","_drawio_proc_name":"Cleaning No. 29","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nap-Pao","_proc_name":"Cleaner","_chemical":"No. 29(CN)","_drawio_proc_name":"Cleaning No. 29(CN)","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nan-Pao","_proc_name":"Primer","_chemical":"1015F","_drawio_proc_name":"☆ Primer 1015F","_hrd":["☆ Powder : 2% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nan-Pao","_proc_name":"Primer","_chemical":"1016AB","_drawio_proc_name":"☆ Primer 1016AB","_hrd":["☆ Powder : 2% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nan-Pao","_proc_name":"Primer","_chemical":"1024","_drawio_proc_name":"※ Primer 1024","_hrd":["※ 1071 : 5% ADDITION","※ H143 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nan-Pao","_proc_name":"Primer","_chemical":"111FT","_drawio_proc_name":"※ Primer 111FT","_hrd":["※ 1071 : 4% ADDITION","※ H143 : 4% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nan-Pao","_proc_name":"Primer","_chemical":"111GN","_drawio_proc_name":"※ Primer 111GN","_hrd":["※ H143 : 4% ADDITION","※ 1071 : 4% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nan-Pao","_proc_name":"Primer","_chemical":"122KN","_drawio_proc_name":"※ Primer 122KN","_hrd":["※ H143 : 5% ADDITION","※ 1071 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nan-Pao","_proc_name":"Primer","_chemical":"2015K","_drawio_proc_name":"☆ Primer 2015K","_hrd":["☆ Powder : 2% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nan-Pao","_proc_name":"Primer","_chemical":"P-132 ","_drawio_proc_name":"※ Primer P-132","_hrd":["※ H143 : 3% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nan-Pao","_proc_name":"Primer","_chemical":"UE-8SF","_drawio_proc_name":"★ Primer UE-8SF","_hrd":["★ CL-16 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nan-Pao","_proc_name":"Primer","_chemical":"UE-311","_drawio_proc_name":"★ Primer UE-311","_hrd":["★ CL-16 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nan-Pao","_proc_name":"Primer","_chemical":"UE-312L","_drawio_proc_name":"★ Primer UE-312L","_hrd":["★ CL-16 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nan-Pao","_proc_name":"Cement","_chemical":"71KMN","_drawio_proc_name":"※ Cement 71KMN","_hrd":["※ 1071 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nan-Pao","_proc_name":"Cement","_chemical":"71KMN V2","_drawio_proc_name":"※ Cement 71KMN V2","_hrd":["※ 1071 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nan-Pao","_proc_name":"Cement","_chemical":"NP-500","_drawio_proc_name":"Cement NP-500","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nan-Pao","_proc_name":"Cement","_chemical":"NP-500H","_drawio_proc_name":"Cement NP-500H","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nan-Pao","_proc_name":"Cement","_chemical":"NP-500L","_drawio_proc_name":"Cement NP-500L","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nan-Pao","_proc_name":"Cement","_chemical":"NP-200","_drawio_proc_name":"Cement NP-200","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nan-Pao","_proc_name":"Cement","_chemical":"NP-600","_drawio_proc_name":"Cement NP-600","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nan-Pao","_proc_name":"Cement","_chemical":"NP-99","_drawio_proc_name":"★ Cement NP-99","_hrd":["★ CL-16 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nan-Pao","_proc_name":"Cement","_chemical":"WP-505","_drawio_proc_name":"★ Cement WP-505","_hrd":["★ CL-16 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Han young","_proc_name":"Cleaner","_chemical":"2388M","_drawio_proc_name":"Cleaning 2388M","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nap-Pao","_proc_name":"Cleaner","_chemical":"256","_drawio_proc_name":"Cleaning 256","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Sam-Bu","_proc_name":"Cleaner","_chemical":"Bio E10-T","_drawio_proc_name":"♣ Cleaning E10-T","_hrd":["♣ ET-3 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Sam-Bu","_proc_name":"Cleaner","_chemical":"Bio S5","_drawio_proc_name":"Cleaning 5S","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cleaner","_chemical":"BONDACE  233BF","_drawio_proc_name":"Cleaning 233BF","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cleaner","_chemical":"BONDACE  233BFU","_drawio_proc_name":"Cleaning 233BFU","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cleaner","_chemical":"BONDACE  233M","_drawio_proc_name":"Cleaning 233M","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cleaner","_chemical":"BONDACE  233SM","_drawio_proc_name":"Cleaning 233SM","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Henkel","_proc_name":"Cleaner","_chemical":"BONDACE  PC-3","_drawio_proc_name":"Cleaning PC-3","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nap-Pao","_proc_name":"Cleaner","_chemical":"No. 29","_drawio_proc_name":"Cleaning No. 29","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Nap-Pao","_proc_name":"Cleaner","_chemical":"No. 29(CN)","_drawio_proc_name":"Cleaning No. 29(CN)","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Han-Young","_proc_name":"Primer","_chemical":"TU-508P","_drawio_proc_name":"※ Primer TU-508P","_hrd":["※ DRFE : 5% ADDITION","※ H-RFE : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Han-Young","_proc_name":"Primer","_chemical":"TU-103TF","_drawio_proc_name":"※ Primer TU-103TF","_hrd":["※ DRFE : 5% ADDITION","※ H-RFE : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Han-Young","_proc_name":"Primer","_chemical":"TU-106TF","_drawio_proc_name":"※ Primer TU-106TF","_hrd":["※ DRFE : 5% ADDITION","※ H-RFE : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Han-Young","_proc_name":"Primer","_chemical":"TU-107","_drawio_proc_name":"☆ Primer TU-107","_hrd":["☆ Powder : 2% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Han-Young","_proc_name":"Primer","_chemical":"TU-1205TF","_drawio_proc_name":"※ Primer TU-1205TF","_hrd":["※ DRFE : 5% ADDITION","※ H-RFE : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Han-Young","_proc_name":"Primer","_chemical":"WP1-116","_drawio_proc_name":"Primer WP1-116","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Han-Young","_proc_name":"Primer","_chemical":"WPM-707","_drawio_proc_name":"☆ Primer WPM-707","_hrd":["☆ Powder : 2% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Han-Young","_proc_name":"Primer","_chemical":"WTU-116K","_drawio_proc_name":"★ Primer WTU-116K","_hrd":["★ HW-005 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Han-Young","_proc_name":"Primer","_chemical":"WTU-116","_drawio_proc_name":"★ Primer WTU-116","_hrd":["★ HW-005 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Han-Young","_proc_name":"Primer","_chemical":"WTU-116S","_drawio_proc_name":"★ Primer WTU-116S","_hrd":["★ HW-005 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Han-Young","_proc_name":"Cement","_chemical":"HA-510TF","_drawio_proc_name":"※ Cement HA-510TF","_hrd":["※ DRFE : 5% ADDITION","※ H-RFE : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Han-Young","_proc_name":"Cement","_chemical":"KW-100A","_drawio_proc_name":"★ Cement KW-100A","_hrd":["★ HW-005 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Han-Young","_proc_name":"Cement","_chemical":"KW-300S","_drawio_proc_name":"★ Cement KW-300S","_hrd":["★ HW-005 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Han-Young","_proc_name":"Cement","_chemical":"KW-700A","_drawio_proc_name":"★ Cement KW-700A","_hrd":["★ HW-005 : 5% ADDITION"],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Han-Young","_proc_name":"Cement","_chemical":"WA-03","_drawio_proc_name":"Cement WA-03","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Han-Young","_proc_name":"Cement","_chemical":"WA-03S","_drawio_proc_name":"Cement WA-03S","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"Han-Young","_proc_name":"Cement","_chemical":"WA-1C","_drawio_proc_name":"Cement WA-1C","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"Re-Heating","_chemical":"","_drawio_proc_name":"Re-Heating","_hrd":[],"_condition":["45~50℃ x 2'15\"","50~55℃ x 2'15\""]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"Re-Heating","_chemical":"","_drawio_proc_name":"","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"Pre-Heating ","_chemical":"","_drawio_proc_name":"Pre-Heating ","_hrd":[],"_condition":["45~50℃ x 2'15\"","50~55℃ x 2'15\""]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"Pre-Heating ","_chemical":"","_drawio_proc_name":"","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"Dry","_chemical":"","_drawio_proc_name":"Dry","_hrd":[],"_condition":["45~50℃ x 2'15\"","48~53℃ x 2'15\"","50~55℃ x 2'15\"","50~60℃ x 2'15\""]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"Wipe rubber surface with water (Clear Rubber only)","_chemical":"","_drawio_proc_name":"Wipe rubber surface with water (Clear Rubber only)","_hrd":[],"_condition":["50~60℃ x 2'15\"","50~55℃ x 2'15\""]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"Wipe rubber surface with water (Clear Rubber only)","_chemical":"","_drawio_proc_name":"","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"Buffing & Air cleaning","_chemical":"","_drawio_proc_name":"Buffing & Air cleaning","_hrd":[],"_condition":["sand paper #40","sand paper #60","sand paper #80","sand paper #320"]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"Transfer to Spraying line","_chemical":"","_drawio_proc_name":"Transfer to Spraying line","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"Thomson Cutting","_chemical":"","_drawio_proc_name":"Thomson Cutting","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"Packing","_chemical":"","_drawio_proc_name":"Packing","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"Marking","_chemical":"","_drawio_proc_name":"Marking","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"Holding time 2hrs","_chemical":"","_drawio_proc_name":"Holding time 2hrs","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"Gauge Marking","_chemical":"","_drawio_proc_name":"Gauge Marking","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"Airbag gauge marking","_chemical":"","_drawio_proc_name":"Airbag gauge marking","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"Cutting","_chemical":"","_drawio_proc_name":"Cutting","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"Attaching & Pressing by hand tool","_chemical":"","_drawio_proc_name":"Attaching & Pressing by hand tool","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"Airbag L/R Marking","_chemical":"","_drawio_proc_name":"Airbag L/R Marking","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"Air Blowing Off Buffing Partcle","_chemical":"","_drawio_proc_name":"Air Blowing Off Buffing Partcle","_hrd":[],"_condition":[]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"PASANGQUI Press","_chemical":"","_drawio_proc_name":"PASANGQUI Press","_hrd":[],"_condition":["6~7㎏/㎠↑ × 15\"↑"]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"MULTI Press","_chemical":"","_drawio_proc_name":"MULTI Press","_hrd":[],"_condition":["20㎏/㎠ ↑ × 8\"↑","25㎏/㎠ ↑ × 8\"↑"]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"DEEPWELL Press","_chemical":"","_drawio_proc_name":"DEEPWELL Press","_hrd":[],"_condition":["30㎏/㎠ ↑ × 8\"↑","30㎏/㎠ ↑ × 10\"↑","40㎏/㎠ ↑ × 8\"↑","40㎏/㎠ ↑ × 10\"↑"]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"Top Bottom Press","_chemical":"","_drawio_proc_name":"Top Bottom Press","_hrd":[],"_condition":["30㎏/㎠ ↑ × 8\"↑","30㎏/㎠ ↑ × 10\"↑","40㎏/㎠ ↑ × 8\"↑","40㎏/㎠ ↑ × 10\"↑"]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"Toe heel press","_chemical":"","_drawio_proc_name":"Toe heel press","_hrd":[],"_condition":["30㎏/㎠ ↑ × 10\"↑"]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"Side press","_chemical":"","_drawio_proc_name":"Side press","_hrd":[],"_condition":["20㎏/㎠ ↑ × 10\"↑","30㎏/㎠ ↑ × 10\"↑"]},{"_sheet":"ZX_BPFC_Assembly,ZX_BPFC_Stockfit","_vendor":"","_proc_name":"Fist Press","_chemical":"","_drawio_proc_name":"Fist Press","_hrd":[],"_condition":["30~35㎏/㎠ × 1~2\""]},{"_sheet":"","_vendor":"","_proc_name":"","_chemical":"","_drawio_proc_name":"","_hrd":[],"_condition":[]}],
-    /*data: [{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+    data: [{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
         ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
-    ],*/
+        ,{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+        ,{id: "002A9F9760024C95BC38E65F174C3862", _proc_name: "Cement", _chemical: "SW-07"}
+        ,{id: "0364626132124ED8B21078951CA4A23D", _proc_name: "Cleaning", _chemical: "MEK"}
+        ,{id: "05395DC479DC42549EBE3C92145C102B", _proc_name: "Pre-Heating 50~55℃x Min.1'30", _chemical: ""}
+        ,{id: "078E5CAC43AB47ABBF455A8F98416E8C", _proc_name: "Cement", _chemical: "6300U-2"}
+    ],
     loc: {
         x: 230,
         y: 240,
     },
-    load: (prc,chem,vdr) => {
+    load: (prc,chem) => {
         let popContents = document.querySelector("#popPrcContents");
         popContents.innerHTML = "";
         let tmp = document.querySelector("#prcCard");
         let tempAr = popPrc.data.filter((n) => {
-            if(!prc && !chem && !vdr) return true;
+            if(!prc && !chem) return true;
             if(n._proc_name.toLowerCase().indexOf(prc.toLowerCase()) >=0
-                && n._chemical.toLowerCase().indexOf(chem.toLowerCase()) >=0
-                && n._vendor.toLowerCase().indexOf(vdr.toLowerCase()) >=0) return true;
+                && n._chemical.toLowerCase().indexOf(chem.toLowerCase()) >=0 ) return true;
             else return false;
         });
         for (let data of tempAr) {
-            tmp.content.querySelector('div[name="_proc_name"').setAttribute('raw',JSON.stringify(data));
+            tmp.content.querySelector('div[name="_proc_name"').id = data.id;
             tmp.content.querySelector('div[name="_proc_name"').textContent =
-                data._drawio_proc_name;
-            tmp.content.querySelector('div[name="_vendor"').textContent =
-                data._vendor;
-
-            popPrc.loadCondition(tmp, data);
-            popPrc.loadHardener(tmp, data);
-
+                data._proc_name;
+            tmp.content.querySelector('div[name="_chemical"').textContent =
+                data._chemical;
             let clone = tmp.content.cloneNode(true);
             popContents.appendChild(clone);
-        }
-    },
-    loadCondition: (tmp, data) =>{
-        if(data._condition.length == 0) {
-            tmp.content.querySelector('div[name="_condition_title"]').style.display = 'none';
-            tmp.content.querySelector('input[name="_condition"]').style.display = 'none';
-            tmp.content.querySelector('select[name="_condition"]').style.display = 'none';
-        }else if(data._condition.length == 1){
-            tmp.content.querySelector('input[name="_condition"]').value = data._condition[0];
-            tmp.content.querySelector('div[name="_condition_title"]').style.display = 'inline-block';
-            tmp.content.querySelector('input[name="_condition"]').style.display = '';
-            tmp.content.querySelector('select[name="_condition"]').style.display = 'none';
-        }else{
-            tmp.content.querySelector('input[name="_condition"]').value = data._condition[0];
-            tmp.content.querySelector('div[name="_condition_title"]').style.display = 'inline-block';
-            tmp.content.querySelector('input[name="_condition"]').style.display = '';
-            tmp.content.querySelector('select[name="_condition"]').style.display = '';
-        }
-        tmp.content.querySelector('select[name="_condition"]').innerHTML = '';
-        for(let condition of data._condition){
-            let option = document.createElement('option');
-            option.innerText = condition;
-            tmp.content.querySelector('select[name="_condition"]').appendChild(option);
-        }
-    },
-    loadHardener: (tmp, data) =>{
-        if(data._hrd.length == 0){
-            tmp.content.querySelector('div[name="_hrd_title"]').style.display = 'none';
-            tmp.content.querySelector('input[name="_hrd"]').style.display = 'none';
-            tmp.content.querySelector('select[name="_hrd"]').style.display = 'none';
-        }else if(data._hrd.length == 1){
-            tmp.content.querySelector('input[name="_hrd"]').value = data._hrd[0];
-            tmp.content.querySelector('div[name="_hrd_title"]').style.display = 'inline-block';
-            tmp.content.querySelector('input[name="_hrd"]').style.display = '';
-            tmp.content.querySelector('select[name="_hrd"]').style.display = 'none';
-        }else{
-            tmp.content.querySelector('input[name="_hrd"]').value = data._hrd[0];
-            tmp.content.querySelector('div[name="_hrd_title"]').style.display = 'inline-block';
-            tmp.content.querySelector('input[name="_hrd"]').style.display = '';
-            tmp.content.querySelector('select[name="_hrd"]').style.display = '';
-        }
-        tmp.content.querySelector('select[name="_hrd"]').innerHTML = '';
-        for(let hrd of data._hrd){
-            let option = document.createElement('option');
-            option.innerText = hrd;
-            tmp.content.querySelector('select[name="_hrd"]').appendChild(option);
         }
     },
     onClickItem: (obj) => {
@@ -932,9 +981,7 @@ let popPrc = {
     onSearch: () =>{
         let srchPrc = document.querySelector('#popPrc div input[name="srchPrc"]').value;
         let srchChem = document.querySelector('#popPrc div input[name="srchChem"]').value;
-        let srchVdr = document.querySelector('#popPrc div input[name="srchVdr"]').value;
-        popPrc.load(srchPrc,srchChem,srchVdr);
+        popPrc.load(srchPrc,srchChem);
     }
 };
-
 
