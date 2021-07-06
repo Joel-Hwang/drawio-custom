@@ -225,7 +225,6 @@ let tmplStockfit = `
 `;
 window.onload = function () {
     window.resizeTo(1620, 1000);
-
     if(opener)
         opener.postMessage({ action: "xml" }, plmUrl);
     iframe = document.createElement("iframe");
@@ -254,6 +253,9 @@ function postMessageBpfc(evt) {
             try{
                 popMat.data = JSON.parse(msg.bomData);
             }catch{alert("Invalid format(bomData)");}
+            try{
+                hardener.init(JSON.parse(msg.hrdData));
+            }catch{alert("Invalid format(hardener)");}
             break;
         case "configure":
             editor.configure();
@@ -945,6 +947,15 @@ let hardener = {
             let option = document.createElement('option');
             option.innerText = hrd;
             clone.querySelector('select[name="_hrd"]').appendChild(option);
+        }
+    },
+    init : (data) =>{
+        document.querySelector('#hrd').innerHTML = '';
+        for(let _hrd of data){
+            let tr = document.createElement('tr');
+            tr.innerHTML=`<td><input type="text" name="hrd" width="200" style="border:none;width:200px;" value="${_hrd._remark}"></input>
+                           <span style="margin: 0px 5px; cursor: pointer" onclick="hardener.delete(this)">x</span></td>`;
+            document.querySelector('#hrd').appendChild(tr);
         }
     },
     getList : () =>{
