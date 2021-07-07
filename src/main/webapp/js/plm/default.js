@@ -47,11 +47,11 @@ function postMessageDefault(evt) {
             editor.save(msg);
             break;
         case "exit":
-            this.close();
+            editor.close();
             break;
         case "export":
             editor.exportXml(msg);
-            this.close();
+            editor.close();
             break;
     }
 }
@@ -107,6 +107,13 @@ let editor = {
             { action: "saveImg", img, decryptedModel },
             plmUrl
         );
+    },
+    close:() =>{
+        opener.postMessage(
+            { action: "close" },
+            plmUrl
+        );
+        window.close();
     },
     encode: (data) => {
         data = encodeURIComponent(data);
