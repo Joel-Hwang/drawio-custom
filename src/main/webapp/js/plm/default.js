@@ -17,8 +17,8 @@ window.onload = function () {
     iframe.setAttribute(
         "src",
         drawUrl +
-        "/?splash=0&embed=1&ui=sketch&spin=1&proto=json&configure=1&ruler=1&zoom=4&viewbox=" +
-        encodeURIComponent('{"x":3,"y":100,"width":1000,"height":1000}')
+        "/?splash=0&embed=1&ui=sketch&spin=1&proto=json&configure=1&ruler=1&zoom=4"
+        //+"&"+encodeURIComponent('{"x":3,"y":100,"width":1000,"height":1000}')
     );
     document.body.appendChild(iframe);
 };

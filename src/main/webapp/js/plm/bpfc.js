@@ -230,13 +230,18 @@ window.onload = function () {
     iframe = document.createElement("iframe");
     iframe.setAttribute("frameborder", "0");
     window.addEventListener("message", postMessageBpfc);
+    let parentEdit = URLParser(window.location.href).getParam('parentEdit')==='true'?'1':'0';
     iframe.setAttribute(
         "src",
         drawUrl +
-        "?splash=0&clibs=U"+encodeURIComponent(drawUrl+'stencils/bpfc/BPFC')+"&embed=1&ui=sketch&spin=1&proto=json&configure=1&ruler=1&zoom=4&viewbox=" +
-        encodeURIComponent('{"x":3,"y":100,"width":1000,"height":1000}')
+        "?splash=0&clibs=U"+encodeURIComponent(drawUrl+'stencils/bpfc/BPFC')+"&embed=1&ui=sketch&spin=1&proto=json&configure=1&ruler=1&zoom=4"
+        +"&chrome="+parentEdit
+        //+"&viewbox="+encodeURIComponent('{"x":3,"y":100,"width":1000,"height":1000}')
     );
 
+    if(parentEdit === '0'){
+        document.querySelector('.custom-grp').style.display = 'none';
+    }
     document.body.appendChild(iframe);
 };
 
