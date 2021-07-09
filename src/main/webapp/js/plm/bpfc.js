@@ -181,45 +181,6 @@ let tmplStockfit = `
         <mxPoint x="80" y="120" as="targetPoint" />
       </mxGeometry>
     </mxCell>
-    <mxCell id="65" value="" style="shape=table;html=1;whiteSpace=wrap;startSize=0;container=1;collapsible=0;childLayout=tableLayout;perimeterSpacing=1;swimlaneFillColor=none;fillColor=none;" vertex="1" parent="1">
-      <mxGeometry x="218" y="483" width="220" height="70" as="geometry" />
-    </mxCell>
-    <mxCell id="66" value="" style="shape=partialRectangle;html=1;whiteSpace=wrap;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="65">
-      <mxGeometry width="220" height="30" as="geometry" />
-    </mxCell>
-    <mxCell id="67" value="&lt;b&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;AREA&lt;/font&gt;&lt;/b&gt;" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;top=0;left=0;bottom=0;right=0;fillColor=#fee9d9;strokeWidth=1;" vertex="1" parent="66">
-      <mxGeometry width="50" height="30" as="geometry" />
-    </mxCell>
-    <mxCell id="68" value="&lt;b&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;CHEMICAL&lt;/font&gt;&lt;/b&gt;" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;top=0;left=0;bottom=0;right=0;fillColor=#fee9d9;" vertex="1" parent="66">
-      <mxGeometry x="50" width="70" height="30" as="geometry" />
-    </mxCell>
-    <mxCell id="69" value="&lt;b style=&quot;font-size: 11px&quot;&gt;UPPER SURFACE&lt;br&gt;LENGTH %&lt;/b&gt;" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;top=0;left=0;bottom=0;right=0;fillColor=#FEE9D9;" vertex="1" parent="66">
-      <mxGeometry x="120" width="100" height="30" as="geometry" />
-    </mxCell>
-    <mxCell id="70" value="" style="shape=partialRectangle;html=1;whiteSpace=wrap;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;strokeColor=none;" vertex="1" parent="65">
-      <mxGeometry y="30" width="220" height="20" as="geometry" />
-    </mxCell>
-    <mxCell id="71" value="All" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;strokeColor=none;" vertex="1" parent="70">
-      <mxGeometry width="50" height="20" as="geometry" />
-    </mxCell>
-    <mxCell id="72" value="" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;" vertex="1" parent="70">
-      <mxGeometry x="50" width="70" height="20" as="geometry" />
-    </mxCell>
-    <mxCell id="73" value="&amp;gt;70%" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;" vertex="1" parent="70">
-      <mxGeometry x="120" width="100" height="20" as="geometry" />
-    </mxCell>
-    <mxCell id="74" value="" style="shape=partialRectangle;html=1;whiteSpace=wrap;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="65">
-      <mxGeometry y="50" width="220" height="20" as="geometry" />
-    </mxCell>
-    <mxCell id="75" value="All" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;" vertex="1" parent="74">
-      <mxGeometry width="50" height="20" as="geometry" />
-    </mxCell>
-    <mxCell id="76" value="" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;" vertex="1" parent="74">
-      <mxGeometry x="50" width="70" height="20" as="geometry" />
-    </mxCell>
-    <mxCell id="77" value="&lt;span&gt;&amp;gt;70%&lt;/span&gt;" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;" vertex="1" parent="74">
-      <mxGeometry x="120" width="100" height="20" as="geometry" />
-    </mxCell>
   </root>
 </mxGraphModel>
 `;
