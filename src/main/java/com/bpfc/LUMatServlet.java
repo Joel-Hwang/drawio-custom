@@ -45,7 +45,7 @@ public class LUMatServlet extends HttpServlet
         String[] keyword = {"","","",""};
         for(int i = 0; i<element.getAsJsonArray().size()&&i<4; i++){
             String key = element.getAsJsonArray().get(i).getAsString();
-            if(key.isEmpty() || "NULL".equals(key) || "N/A".equals(key))
+            if(key.isEmpty() || "NULL".equals(key) || "N/A".equals(key) || !key.startsWith("LU"))
                 continue;
             keyword[i] = key;
         }
